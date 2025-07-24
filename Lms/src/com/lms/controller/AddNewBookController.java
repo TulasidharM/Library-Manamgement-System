@@ -18,9 +18,6 @@ public class AddNewBookController {
 	
 	static {
 		bookService = new BookServiceImpl();
-		System.out.println("bookService initialized?");
-		System.out.println(bookService==null ? "Null" : bookService);
-		bookService.addNewBook(new Book("random","hello","Scifi"));
 	}
 	
 	@FXML
@@ -39,7 +36,6 @@ public class AddNewBookController {
 		String title = titleField.getText();
 		String author = authorField.getText();
 		String category = categoryField.getText();
-		System.out.println(title + " " + author + " " + category);
 		
 		Book newBook = new Book(title,author,category);
 		bookService.addNewBook(newBook);
