@@ -54,14 +54,22 @@ public class DataBookDao implements BookDao {
 			PreparedStatement statement=connection.prepareStatement(query);
 			ResultSet booksList=statement.executeQuery();
 			while(booksList.next()) {
+				int bookId=booksList.getInt("BookId");
+				String title=booksList.getString("Title");
+				String author=booksList.getString("Author");
+				String category=booksList.getString("Category");
+				char status=booksList.getString("BookStatus").charAt(0);
+				char availability=booksList.getString("Availability").charAt(0);
 				
+				Book book=new Book(bookId, title , author, category, status, availability);
+				books.add(book);
 			}
 			
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
 		}
-		return null;
+		return books;
 	}
 	
 	
