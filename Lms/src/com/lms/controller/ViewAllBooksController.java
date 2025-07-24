@@ -52,12 +52,7 @@ public class ViewAllBooksController {
     	
     	bookService = new BookServiceImpl();
     	List<Book> books = bookService.getAllBooks();
-    	//
-    	System.out.println(books == null);
-    	for(Book book : books) {
-    		System.out.println(book.getBook_Title());
-    	}
-    	//
+    	
     	updateBookList(books);
     	
         // Update PropertyValueFactory to match exact property names from Book class

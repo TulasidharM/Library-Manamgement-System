@@ -37,7 +37,6 @@ public class MemberServiceImpl implements MemberService{
         if (member.getAddress() == null || member.getAddress().trim().isEmpty()) {
             throw new IllegalArgumentException("Address cannot be empty");
         }
-
        
         memberDao.insertMember(member);
     }
