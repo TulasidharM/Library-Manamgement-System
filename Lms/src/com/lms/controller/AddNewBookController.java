@@ -42,7 +42,7 @@ public class AddNewBookController {
 		System.out.println(title + " " + author + " " + category);
 		
 		Book newBook = new Book(title,author,category);
-		//bookService.addNewBook(newBook);
+		bookService.addNewBook(newBook);
 		
 		Main.changePage("LibraryHome");
 	}
