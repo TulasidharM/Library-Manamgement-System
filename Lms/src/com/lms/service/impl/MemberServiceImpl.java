@@ -17,6 +17,7 @@ public class MemberServiceImpl implements MemberService{
 	
     @Override
     public void addNewMember(Member member) {
+    	
         if (member.getMember_Name() == null || member.getMember_Name().trim().isEmpty()) {
             throw new IllegalArgumentException("Member name cannot be empty");
         }
@@ -37,6 +38,7 @@ public class MemberServiceImpl implements MemberService{
             throw new IllegalArgumentException("Address cannot be empty");
         }
 
+       
         memberDao.insertMember(member);
     }
 

@@ -14,7 +14,7 @@ public class MemberDaoImpl implements MemberDao {
     
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "root@pokemon";
+    private static final String password = "Ashok@99122";
 
     @Override
     public void insertMember(Member newMember) {
@@ -25,6 +25,7 @@ public class MemberDaoImpl implements MemberDao {
             statement.setString(2, newMember.getEmail());
             statement.setInt(3, newMember.getMobile_No());
             statement.setString(4, String.valueOf(newMember.getGender()));
+            statement.setString(5, newMember.getAddress());
             
             int rowsAffected = statement.executeUpdate();
             

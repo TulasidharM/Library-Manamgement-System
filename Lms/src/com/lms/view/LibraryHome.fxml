@@ -64,7 +64,7 @@
         <VBox spacing="15" alignment="CENTER">
             <Label text="Customer Services" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #2196f3;"/>
             <VBox spacing="10" alignment="CENTER">
-                <Button text="Add Member" styleClass="action-button"
+                <Button text="Add Member" onAction="#addMemberButtonClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="View Members" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>

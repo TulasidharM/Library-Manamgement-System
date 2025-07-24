@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 
 public class LibraryHomeController {
 	
+	
 	@FXML
 	public void addBookButtonClick() throws IOException {
 		Main.changePage("AddNewBook");
@@ -14,5 +15,10 @@ public class LibraryHomeController {
 	@FXML
 	public void viewAllBooksClick() throws IOException{
 		Main.changePage("ViewAllBooks");
+	}
+	
+	@FXML
+	public void addMemberButtonClick() throws IOException {
+		Main.changePage("AddNewMember");
 	}
 }
