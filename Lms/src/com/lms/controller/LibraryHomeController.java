@@ -21,4 +21,9 @@ public class LibraryHomeController {
 	public void addMemberButtonClick() throws IOException {
 		Main.changePage("AddNewMember");
 	}
+	
+	@FXML
+	public void viewAllMembersClick() throws IOException{
+		Main.changePage("ViewAllMembers");
+	}
 }

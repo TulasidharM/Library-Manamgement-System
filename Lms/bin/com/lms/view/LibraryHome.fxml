@@ -66,7 +66,7 @@
             <VBox spacing="10" alignment="CENTER">
                 <Button text="Add Member" onAction="#addMemberButtonClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="View Members" styleClass="action-button"
+                <Button text="View Members" onAction="#viewAllMembersClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="Member's Books" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
