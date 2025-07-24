@@ -23,6 +23,7 @@ public class BookServiceImpl implements BookService{
 			String bookCategory=newBook.getBook_Category();
 			char bookStatus=newBook.getBook_Status();
 			char bookAvailability=newBook.getBook_Availability();
+			
 			if(bookTitle.trim()==null || bookTitle.trim().isEmpty() || bookTitle.length()>255) {
 				throw new DBConstrainsException("Entered Book Name Is Invalid");
 			}
@@ -49,8 +50,7 @@ public class BookServiceImpl implements BookService{
 	
 	@Override
 	public List<Book> getAllBooks() {
-		
-		return null;
+		return bookDao.getAllBooks();
 	}
 	
 	

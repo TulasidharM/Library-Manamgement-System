@@ -1,5 +1,6 @@
 package com.lms.dao;
 
-public class MemberDao {
-
+public interface MemberDao {
+	
+	
 }
