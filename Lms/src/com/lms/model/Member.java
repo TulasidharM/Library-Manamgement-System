@@ -1,27 +1,30 @@
 package com.lms.model;
 
-public class Members {
+public class Member {
 	private int member_Id;
 	private String member_Name;
 	private String email;
 	private int mobile_No;
 	private char gender;
+	private String address;
 	
 	
 	
-	public Members(String member_Name, String email, int mobile_No, char gender) {
+	public Member(String member_Name, String email, int mobile_No, char gender,String address) {
 		this.member_Name = member_Name;
 		this.email = email;
 		this.mobile_No = mobile_No;
 		this.gender = gender;
+		this.setAddress(address);
 	}
 
-	public Members(int member_Id, String member_Name, String email, int mobile_No, char gender) {
+	public Member(int member_Id, String member_Name, String email, int mobile_No, char gender,String address) {
 		this.member_Id = member_Id;
 		this.member_Name = member_Name;
 		this.email = email;
 		this.mobile_No = mobile_No;
 		this.gender = gender;
+		this.setAddress(address);
 	}
 	
 	public String getMember_Name() {
@@ -50,5 +53,13 @@ public class Members {
 	}
 	public int getMember_Id() {
 		return member_Id;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }
