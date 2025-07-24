@@ -3,6 +3,7 @@ package com.lms.service.impl;
 import java.util.List;
 
 import com.lms.dao.BookDao;
+import com.lms.dao.DataBookDao;
 import com.lms.exceptions.DBConstrainsException;
 import com.lms.model.Book;
 import com.lms.service.BookService;
@@ -10,6 +11,11 @@ import com.lms.service.BookService;
 public class BookServiceImpl implements BookService{
 	private BookDao bookDao;
 	
+	
+	public BookServiceImpl() {
+		this.bookDao = new DataBookDao();
+	}
+
 	@Override
 	public void addNewBook(Book newBook) {
 		try {
@@ -44,8 +50,7 @@ public class BookServiceImpl implements BookService{
 	
 	@Override
 	public List<Book> getAllBooks() {
-		
-		return null;
+		return bookDao.getAllBooks();
 	}
 	
 	
