@@ -1,5 +1,13 @@
 package com.lms.controller;
 
-public class LibraryHomeController {
+import java.io.IOException;
+import com.lms.main.Main;
+import javafx.fxml.FXML;
 
+public class LibraryHomeController {
+	
+	@FXML
+	public void addBookButtonClick() throws IOException {
+		Main.changePage("AddNewBook");
+	}
 }
