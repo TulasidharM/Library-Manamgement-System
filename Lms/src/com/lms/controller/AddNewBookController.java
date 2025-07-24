@@ -14,7 +14,14 @@ import javafx.scene.control.TextField;
 
 public class AddNewBookController {
 	
-	BookService bookService;
+	static BookService bookService;
+	
+	static {
+		bookService = new BookServiceImpl();
+		System.out.println("bookService initialized?");
+		System.out.println(bookService==null ? "Null" : bookService);
+		bookService.addNewBook(new Book("random","hello","Scifi"));
+	}
 	
 	@FXML
 	TextField titleField;
@@ -24,8 +31,7 @@ public class AddNewBookController {
 	TextField categoryField;
 	
 	@FXML
-	public void intialize() {
-		bookService = new BookServiceImpl();
+	public void initialize() {
 	}
 	
 	@FXML
@@ -36,7 +42,8 @@ public class AddNewBookController {
 		System.out.println(title + " " + author + " " + category);
 		
 		Book newBook = new Book(title,author,category);
-		bookService.addNewBook(newBook);
+		//bookService.addNewBook(newBook);
+		
 		Main.changePage("LibraryHome");
 	}
 	

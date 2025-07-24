@@ -10,6 +10,8 @@ import com.lms.service.BookService;
 public class BookServiceImpl implements BookService{
 	private BookDao bookDao;
 	
+	
+	
 	@Override
 	public void addNewBook(Book newBook) {
 		try {
