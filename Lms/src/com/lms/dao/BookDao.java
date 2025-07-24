@@ -1,5 +1,11 @@
 package com.lms.dao;
 
-public class BookDao {
 
+import java.util.List;
+import com.lms.model.Book;
+
+public interface BookDao {
+	
+	Book addBook(Book newBook);
+	List<Book> getAllBooks();
 }

@@ -62,10 +62,12 @@ public class Book {
 	public void setBook_Availability(char book_Availability) {
 		this.book_Availability = book_Availability;
 	}
-
-
 	public int getBook_Id() {
 		return book_Id;
+	}
+	
+	public void setBook_Id(int book_Id) {
+		this.book_Id = book_Id;
 	}
 
 }
