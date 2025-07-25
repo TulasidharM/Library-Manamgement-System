@@ -14,7 +14,7 @@ public class MemberDaoImpl implements MemberDao {
     
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "root@pokemon";
+    private static final String password = "Ashok@99122";
 
     @Override
     public void insertMember(Member newMember) {
@@ -85,14 +85,34 @@ public class MemberDaoImpl implements MemberDao {
             if (rowsAffected == 0) {
                 throw new SQLException("Failed to update member: Member not found");
             }
-            
+            addMemberLogs(member);
         } catch (SQLException e) {
             System.out.println("Error updating member: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-
+    public void addMemberLogs(Member member) {
+    	String query = "INSERT INTO members_log(MemberId,Name,Email,Mobile,Gender,Address) VALUES (?,?,?,?,?,?);";
+    	try (Connection connection = DriverManager.getConnection(url, user, password);){
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, member.getMember_Id());
+			statement.setString(2, member.getMember_Name());
+            statement.setString(3, member.getEmail());
+            statement.setInt(4, member.getMobile_No());
+            statement.setString(5, String.valueOf(member.getGender()));
+            statement.setString(6, member.getAddress());
+            
+            int rowsAffected = statement.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Add member log failed, no rows affected.");
+            } 
+			
+    	} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+    }
+    
 	@Override
 	public Member getMemberById(int memberId) {
 		Member member=null;

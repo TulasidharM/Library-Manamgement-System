@@ -15,7 +15,7 @@ public class DataBookDao implements BookDao {
 	
 	private static final String url="jdbc:mysql://localhost:3306/library";
 	private static final String user="root";
-	private static final String password="root@pokemon";
+	private static final String password="Ashok@99122";
 	
 	@Override
 	public Book addBook(Book newBook) {
@@ -87,9 +87,33 @@ public class DataBookDao implements BookDao {
 	        if (rowsAffected == 0) {
 	            throw new SQLException("Book update failed, no rows affected.");
 	        }
+	        addBookLogs(book);
 	    } catch (SQLException e) {
 	        System.out.println("Error updating book: " + e.getMessage());
 	    }
+	}
+	
+	public void addBookLogs(Book book) {
+		String query="INSERT INTO books_log(BookId,Title,Author,Category,Status,Availability) VALUES (?,?,?,?,?,?);";
+		
+		try (Connection connection = DriverManager.getConnection(url, user, password)) {
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setInt(1, book.getBook_Id());
+	        statement.setString(2, book.getBook_Title());
+	        statement.setString(3, book.getBook_Author());
+	        statement.setString(4, book.getBook_Category());
+	        statement.setString(5, String.valueOf(book.getBook_Status()));
+	        statement.setString(6, String.valueOf(book.getBook_Availability()));
+	        
+	        int rowsAffected = statement.executeUpdate();
+	        if (rowsAffected == 0) {
+	            throw new SQLException("Add book log failed, no rows affected.");
+	        }
+	        
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		
 	}
 	
 	@Override
