@@ -58,8 +58,8 @@ public class BookServiceImpl implements BookService{
 	}
 	
 	@Override
-	public void updateBookAvailability(Book book) {
-		// TODO Auto-generated method stub
+	public void updateBookAvailability(int bookId,boolean isAvailable) {
+		bookDao.updateBookAvailability(bookId, isAvailable);
 	}
 	
 	@Override

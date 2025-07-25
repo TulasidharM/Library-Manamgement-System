@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,27 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			e.printStackTrace();
 		}
 		return records;
+	}
+	
+	@Override
+	public void updateIssueRecord(int issueId , boolean isReturned) {
+		
+		String query="UPDATE issue_records SET Status=?,ReturnDate=? WHERE IssueId=?";
+		
+		
+		
+		try(Connection connection=DriverManager.getConnection(url,user,password);){
+			
+			PreparedStatement statement=connection.prepareStatement(query);
+			statement.setString(1, isReturned ? "R" : "I");
+			statement.setInt(3, issueId);
+			statement.setDate(2, isReturned? java.sql.Date.valueOf(LocalDate.now()) : null);
+			statement.executeUpdate();
+			
+			
+		}catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	

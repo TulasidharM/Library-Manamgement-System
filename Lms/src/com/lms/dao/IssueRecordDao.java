@@ -6,6 +6,6 @@ import com.lms.model.Issue_Records;
 
 public interface IssueRecordDao {
 	void addIssueRecord(Issue_Records newRecord);
-	
+	public void updateIssueRecord(int issueId , boolean isReturned);
 	List<Issue_Records> getAllIssuedRecords();
 }

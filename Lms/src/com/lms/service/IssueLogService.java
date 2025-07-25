@@ -7,6 +7,6 @@ public interface IssueLogService {
 	public void addIssueRecord(Issue_Records newRecord);
 	
 	public List<Issue_Records> getAllIssuedRecords();
-	void returnIssuedBook(int issueId , int bookId);
-	public List<Issue_Records> getAllIssueRecords();
+	void returnIssuedBook(int issueId , boolean isReturned);
+	
 }

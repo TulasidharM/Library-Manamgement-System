@@ -53,23 +53,36 @@ public class ReturnBookController {
 	
 	@FXML
 	void getBooksByMember(){
-		List<String> records= IssueBookService.getAllIssueRecords().stream()
+		if(memberComboBox.getValue() == null) {
+			return;
+		}
+		List<String> records= IssueBookService.getAllIssuedRecords().stream()
 										.filter(r->{
 											int memberId = Integer.parseInt(memberComboBox.getValue().split("-")[0].trim());
 											System.out.println("Got member id:"+memberId);
-											return r.getMemberId() == memberId;
+											return r.getMemberId() == memberId && r.getStatus() == 'I';
 										})
 										.map(r->{
-											return r.getBookId()+" " +bookService.getBookById(r.getBookId()).getBook_Title();
+											return r.getIssueId()+"-"+r.getBookId()+" - " +bookService.getBookById(r.getBookId()).getBook_Title();
 										})
 										.collect(Collectors.toList());
 		
 		bookComboBox.getItems().clear();
 		bookComboBox.getItems().addAll(records);
+		
 	}
+	
 	@FXML
 	void returnButtonClick(){
-		
+		int bookId = Integer.parseInt(bookComboBox.getValue().split("-")[1].trim());
+		int issueId = Integer.parseInt(bookComboBox.getValue().split("-")[0].trim());
+		bookService.updateBookAvailability(bookId,true);
+		IssueBookService.returnIssuedBook(issueId, true);
+		try {
+			Main.changePage("LibraryHome");
+		} catch (IOException e) {
+			System.out.println("Error changing to home page");
+		}
 	}
 	
 }

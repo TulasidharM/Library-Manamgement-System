@@ -14,11 +14,6 @@ import com.lms.model.Issue_Records;
 import com.lms.service.IssueLogService;
 
 public class IssueLogServiceImpl implements IssueLogService{
-	
-	@Override
-	public void returnIssuedBook(int issueId, int bookId) {
-		
-	}
 
 	private BookDao bookDao;
 	private MemberDao memberDao;
@@ -47,10 +42,11 @@ public class IssueLogServiceImpl implements IssueLogService{
 		}
 	}
 	
-	public List<Issue_Records> getAllIssueRecords() {
-		return issueRecordDao.getAllIssuedRecords();
-	}
 	
+	//TODO: add validation , make sure the record exists
+	public void returnIssuedBook(int issueId, boolean isReturned) {
+		issueRecordDao.updateIssueRecord(issueId, isReturned);
+	}
 	
 
 	@Override
