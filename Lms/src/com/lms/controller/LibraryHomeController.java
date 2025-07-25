@@ -2,7 +2,6 @@ package com.lms.controller;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,12 +9,12 @@ import java.util.Map.Entry;
 import com.lms.dao.IssueRecordDao;
 import com.lms.dao.IssueRecordDaoImpl;
 import com.lms.main.Main;
-import com.lms.model.Issue_Records;
 import com.lms.model.OverDueList;
 import com.lms.service.BookService;
-import com.lms.service.MemberService;
 import com.lms.service.impl.BookServiceImpl;
-import com.lms.service.impl.MemberServiceImpl;
+import com.lms.model.ReportMember;
+import com.lms.service.IssueLogService;
+import com.lms.service.impl.IssueLogServiceImpl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,13 +52,34 @@ public class LibraryHomeController {
     @FXML
     private TableColumn<CategoryCount, Long> totalBooksColumn;
     
-    private ObservableList<OverDueList> OverdueList = FXCollections.observableArrayList();
+  
     
-    private BookService bookService;
+    
     private IssueRecordDao recordDao;
     
+    
+    @FXML
+    private TableView<ReportMember> memberBooksTable;
+    
+    @FXML
+    private TableColumn<ReportMember, Integer> memberIdColumn;
+    
+    @FXML
+    private TableColumn<ReportMember, String> nameColumn;
+    
+    @FXML
+    private TableColumn<ReportMember, Integer> booksIssuedColumn;
+    
+    @FXML
+    private ObservableList<OverDueList> OverdueList = FXCollections.observableArrayList();
+    
+    
+    private BookService bookService;
+    private IssueLogService issueLongService;
+    
+    
     public void initialize() {
-        bookService = new BookServiceImpl();
+    	bookService = new BookServiceImpl();
         recordDao=new IssueRecordDaoImpl();
         List<OverDueList> overDueRecordsList=recordDao.getOverdueRecords();
         updateOverduerecordsList(overDueRecordsList);
@@ -69,12 +89,19 @@ public class LibraryHomeController {
         member.setCellValueFactory(new PropertyValueFactory<>("memberName"));
         dueDate.setCellValueFactory(new PropertyValueFactory<>("overDueDate"));
         OverDue_BooksListTABLE.setItems(OverdueList);
-        
+
+        bookService = new BookServiceImpl();
+        issueLongService = new IssueLogServiceImpl();
         // Initialize table columns
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         totalBooksColumn.setCellValueFactory(new PropertyValueFactory<>("count"));
         
-        // Load category data
+        memberIdColumn.setCellValueFactory(new PropertyValueFactory<>("memberId"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        booksIssuedColumn.setCellValueFactory(new PropertyValueFactory<>("booksActiveString"));
+        
+       
+        loadActiveBooksOfMembers();
         loadCategoryData();
     }
     
@@ -82,6 +109,10 @@ public class LibraryHomeController {
     	OverdueList.clear();
     	OverdueList.addAll(records);
     } 
+    private void loadActiveBooksOfMembers() {
+        List<ReportMember> list = issueLongService.booksOfMemberReport();
+        memberBooksTable.setItems(FXCollections.observableArrayList(list));
+    }
     
     private void loadCategoryData() {
         Map<String, Long> categoryMap = bookService.getBooksByCategory();
@@ -111,7 +142,6 @@ public class LibraryHomeController {
         public void setCount(Long count) { this.count = count; }
     }
     
-    // Existing methods...
     @FXML
     public void addBookButtonClick() throws IOException {
         Main.changePage("AddNewBook");
