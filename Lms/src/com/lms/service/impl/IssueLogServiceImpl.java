@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.lms.dao.BookDao;
 import com.lms.dao.DataBookDao;
-import com.lms.dao.IssueRecordDao;
 import com.lms.dao.IssueRecordDaoImpl;
 import com.lms.dao.MemberDao;
 import com.lms.dao.MemberDaoImpl;
@@ -53,5 +52,10 @@ public class IssueLogServiceImpl implements IssueLogService{
 	}
 	
 	
+
+	@Override
+	public List<Issue_Records> getAllIssuedRecords() {
+		return issueRecordDao.getAllIssuedRecords();
+	}
 
 }

@@ -1,7 +1,6 @@
 package com.lms.controller;
 
 import com.lms.main.Main;
-import com.lms.model.Book;
 import com.lms.model.Member;
 import com.lms.service.MemberService;
 import com.lms.service.impl.MemberServiceImpl;
@@ -65,10 +64,6 @@ public class ViewAllMembersController {
     	
     	service = new MemberServiceImpl();
     	List<Member> members = service.getAllMembers();
-    	System.out.println(members == null);
-    	for(Member member : members) {
-    		System.out.println(member.getMember_Id());
-    	}
     	
     	updateMembersList(members);
         id.setCellValueFactory(new PropertyValueFactory<>("member_Id"));

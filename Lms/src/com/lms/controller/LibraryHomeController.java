@@ -35,5 +35,8 @@ public class LibraryHomeController {
 	@FXML 
 	public void returnBookButtonClick() throws IOException{
 		Main.changePage("ReturnBook");
+	@FXML
+	public void viewIssuedRecordsClick() throws IOException{
+		Main.changePage("ViewAllissuedRecords");
 	}
 }

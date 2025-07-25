@@ -19,7 +19,6 @@ public class Issue_Records {
 	}
 	
 	public Issue_Records(int issueId, int bookId, int memberId, char status, Date issueDate, Date returnDate) {
-		super();
 		this.issueId = issueId;
 		this.bookId = bookId;
 		this.memberId = memberId;
