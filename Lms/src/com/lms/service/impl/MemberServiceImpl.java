@@ -22,9 +22,7 @@ public class MemberServiceImpl implements MemberService{
     		memberDao.insertMember(member);
     	}catch(IllegalArgumentException e) {
     		System.out.println(e.getMessage());
-    	}
-        
-        
+    	} 
     }
     
 

@@ -27,7 +27,6 @@ public class BookServiceImpl implements BookService{
 		}
 	}
 
-
 	private void validateBook(Book book) throws DBConstrainsException {
 		String bookTitle=book.getBook_Title();
 		String bookAuthor=book.getBook_Author();

@@ -79,7 +79,7 @@
             <VBox spacing="10" alignment="CENTER">
                 <Button text="Issue Book"  onAction="#issueBookButtonClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="Return Book" styleClass="action-button"
+                <Button text="Return Book"  onAction="#returnBookButtonClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="Issued Records" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>

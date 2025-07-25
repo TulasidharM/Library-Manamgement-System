@@ -1,6 +1,9 @@
 package com.lms.service.impl;
 
 import com.lms.dao.IssueRecordDao;
+
+import java.util.List;
+
 import com.lms.dao.BookDao;
 import com.lms.dao.DataBookDao;
 import com.lms.dao.IssueRecordDao;
@@ -21,6 +24,7 @@ public class IssueLogServiceImpl implements IssueLogService{
 	private BookDao bookDao;
 	private MemberDao memberDao;
 	private IssueRecordDao issueRecordDao;
+	
 	public IssueLogServiceImpl() {
 		this.bookDao = new DataBookDao();
 		this.memberDao=new MemberDaoImpl();
@@ -43,5 +47,11 @@ public class IssueLogServiceImpl implements IssueLogService{
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	public List<Issue_Records> getAllIssueRecords() {
+		return issueRecordDao.getAllIssuedRecords();
+	}
+	
+	
 
 }
