@@ -12,12 +12,13 @@ import java.util.List;
 
 import com.lms.exceptions.IdNotExistException;
 import com.lms.model.Issue_Records;
+import com.lms.model.OverDueList;
 
 public class IssueRecordDaoImpl implements IssueRecordDao {
 	
 	private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "root@pokemon";
+    private static final String password = "Ashok@99122";
     
 	@Override
 	public void addIssueRecord(Issue_Records newRecord) {
@@ -106,6 +107,31 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 		}
 		
 	}
+	
+	public List<OverDueList> getOverdueRecords() {
+	    String query = "SELECT ir.IssueId, ir.BookId, b.Title, m.Name AS Member, DATE_ADD(ir.IssueDate, INTERVAL 30 DAY) AS DueDate FROM issue_records ir JOIN members m ON ir.MemberId = m.MemberId JOIN books b ON ir.BookId = b.BookId WHERE ir.Status = 'I';";
+	    List<OverDueList> duerecordsList = new ArrayList<>();
+	    
+	    try (Connection connection = DriverManager.getConnection(url, user, password);
+	         PreparedStatement statement = connection.prepareStatement(query);
+	         ResultSet recordList = statement.executeQuery()) {
+	        while (recordList.next()) {
+	            int issueId = recordList.getInt("IssueId");
+	            int bookId = recordList.getInt("BookId");
+	            String title = recordList.getString("Title");
+	            String memberName = recordList.getString("Member");
+	            Date dueDate = recordList.getDate("DueDate");
+	            System.out.println(dueDate);
+	            OverDueList overdueRecord = new OverDueList(issueId, bookId, title, memberName, dueDate);
+	            duerecordsList.add(overdueRecord);
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error executing join query: " + e.getMessage());
+	    }
+	    
+	    return duerecordsList;
+	}
+
 	
 	public Issue_Records getRecordById(int issueId) {
 		String query="SELECT IssueId,BookId,MemberId,Status,IssueDate,ReturnDate FROM issue_records WHERE IssueId=?;";

@@ -34,12 +34,13 @@
             
                 <VBox spacing="10">
                     <Label text="Overdue Books" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
-                    <TableView VBox.vgrow="ALWAYS" prefHeight="200">
+                    <TableView fx:id="OverDue_BooksListTABLE" VBox.vgrow="ALWAYS" prefHeight="200">
                         <columns>
-                            <TableColumn text="Book ID" prefWidth="100"/>
-                            <TableColumn text="Title" prefWidth="200"/>
-                            <TableColumn text="Member" prefWidth="150"/>
-                            <TableColumn text="Due Date" prefWidth="120"/>
+                        	<TableColumn fx:id="issueId" text="Issue ID" prefWidth="100"/>
+                            <TableColumn fx:id="bookId" text="Book ID" prefWidth="100"/>
+                            <TableColumn fx:id="Title" text="Title" prefWidth="200"/>
+                            <TableColumn fx:id="member" text="Member" prefWidth="150"/>
+                            <TableColumn fx:id="dueDate" text="Due Date" prefWidth="120"/>
                         </columns>
                     </TableView>
                 </VBox>
