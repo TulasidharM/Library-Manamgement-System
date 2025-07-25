@@ -15,7 +15,7 @@ public class DataBookDao implements BookDao {
 	
 	private static final String url="jdbc:mysql://localhost:3306/library";
 	private static final String user="root";
-	private static final String password="root@pokemon";
+	private static final String password="Ashok@99122";
 	
 	@Override
 	public Book addBook(Book newBook) {
@@ -91,8 +91,30 @@ public class DataBookDao implements BookDao {
 	        System.out.println("Error updating book: " + e.getMessage());
 	    }
 	}
-
 	
+	@Override
+	public void updateBookAvailability(int bookId, boolean isavailable) {
+		 String query = "UPDATE books SET Availability=? WHERE BookId=?";
+		 try (Connection connection = DriverManager.getConnection(url, user, password)) {
+		        PreparedStatement statement = connection.prepareStatement(query);
+		        if(isavailable==true) {
+		        	statement.setString(1, String.valueOf("A"));
+		        }
+		        else {
+		        	statement.setString(1, String.valueOf("I"));
+		        }
+		        statement.setInt(2, bookId);
+		        int rowsAffected = statement.executeUpdate();
+		        if (rowsAffected == 0) {
+		            throw new SQLException("no rows affected.");
+		        }
+		        
+		 } catch (SQLException e) {
+			System.out.println("Error in upadting availability. "+ e.getMessage());
+		}
+	}
+
+	@Override
 	public Book getBookById(int bookId) {
 		Book resultedbook=null;
 		String query="SELECT BookId,Title,Author,Category,BookStatus,Availability FROM books WHERE BookId=?";

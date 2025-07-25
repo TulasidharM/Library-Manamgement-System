@@ -9,6 +9,6 @@ public interface BookDao {
 	Book addBook(Book newBook);
 	List<Book> getAllBooks();
 	void updateBook(Book book);
-	
+	void updateBookAvailability(int bookId,boolean isavalable);
 	Book getBookById(int bookId);
 }

@@ -37,6 +37,7 @@ public class IssueLogServiceImpl implements IssueLogService{
 				throw new IdNotExistException("Entered MemberId Is Invalid");
 			}
 			issueRecordDao.addIssueRecord(newRecord);
+			bookDao.updateBookAvailability(newRecord.getBookId(), false);
 		}
 		catch (IdNotExistException e) {
 			System.out.println(e.getMessage());

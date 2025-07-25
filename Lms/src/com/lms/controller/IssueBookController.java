@@ -29,9 +29,6 @@ public class IssueBookController {
 		memberService = new MemberServiceImpl();
 		bookService =new BookServiceImpl();
 		issueLogService=new IssueLogServiceImpl();
-		members=memberService.getAllMembers().stream().map(member-> member.getMember_Id()+". "+member.getMember_Name()).collect(Collectors.toList());
-		books=bookService.getAllBooks().stream().filter(book-> book.getBook_Status()=='A' && book.getBook_Availability()=='A')
-				.map(resultbook->resultbook.getBook_Id()+"-"+resultbook.getBook_Title()+"["+resultbook.getBook_Category()+"]").collect(Collectors.toList());
  	}
 	
 	@FXML
@@ -43,6 +40,10 @@ public class IssueBookController {
 	
 	@FXML
 	public void initialize() {
+		members=memberService.getAllMembers().stream().map(member-> member.getMember_Id()+". "+member.getMember_Name()).collect(Collectors.toList());
+
+		books=bookService.getAllBooks().stream().filter(book-> ("A".equals(String.valueOf(book.getBook_Status())) && "A".equals(String.valueOf(book.getBook_Availability()))))
+				.map(resultbook->resultbook.getBook_Id()+"-"+resultbook.getBook_Title()+"["+resultbook.getBook_Category()+"]").collect(Collectors.toList());
 		memberIdComboBox.getItems().addAll(members);
 		bookIdComboBox.getItems().addAll(books);
 	}
@@ -56,7 +57,7 @@ public class IssueBookController {
 			if(member.isEmpty() || book.isEmpty()) {
 				throw new EmptyFieldsException("One or more of the fields are empty");
 			}
-			Issue_Records record=new Issue_Records(Integer.parseInt(member.split("\\.")[0].trim()),Integer.parseInt(book.split("-")[0].trim()));
+			Issue_Records record=new Issue_Records(Integer.parseInt(book.split("-")[0].trim()),Integer.parseInt(member.split("\\.")[0].trim()));
 			issueLogService.addIssueRecord(record);
 			Main.changePage("LibraryHome");
 		} catch (IOException e) {
