@@ -43,7 +43,7 @@ public class MemberDaoImpl implements MemberDao {
         String query = "SELECT * FROM members;";
         List<Member> members = new ArrayList<>();
         
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet membersList = statement.executeQuery();
             
@@ -92,4 +92,28 @@ public class MemberDaoImpl implements MemberDao {
         }
     }
 
+
+	@Override
+	public Member getMemberById(int memberId) {
+		Member member=null;
+		String query="SELECT MemberId,Name,Email,Mobile,Gender,Address FROM members WHERE MemberId=?";
+		try (Connection connection = DriverManager.getConnection(url, user, password);){
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, memberId);
+            ResultSet resultMember = statement.executeQuery();
+            if(resultMember.next()) {
+            	int member_Id = resultMember.getInt("MemberId");
+                String name = resultMember.getString("Name");
+                int phone = resultMember.getInt("Mobile");
+                String email = resultMember.getString("Email");
+                String address = resultMember.getString("Address");
+                char gender = resultMember.getString("Gender").charAt(0);
+                
+                member = new Member(member_Id, name, email, phone, gender,address);
+            }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return member;
+	}
 }

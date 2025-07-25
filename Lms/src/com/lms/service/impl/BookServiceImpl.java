@@ -58,7 +58,6 @@ public class BookServiceImpl implements BookService{
 		return bookDao.getAllBooks();
 	}
 	
-	
 	@Override
 	public void updateBookAvailability(Book book) {
 		// TODO Auto-generated method stub
@@ -73,5 +72,9 @@ public class BookServiceImpl implements BookService{
 		} catch (DBConstrainsException e) {
 			System.out.println(e.getMessage());
 		}
+
+	@Override
+	public Book getBookById(int id) {
+		return bookDao.getBookById(id);
 	}
 }

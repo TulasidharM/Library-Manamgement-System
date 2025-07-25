@@ -93,6 +93,28 @@ public class DataBookDao implements BookDao {
 	}
 
 	
+	public Book getBookById(int bookId) {
+		Book resultedbook=null;
+		String query="SELECT BookId,Title,Author,Category,BookStatus,Availability FROM books WHERE BookId=?";
+		try(Connection connection=DriverManager.getConnection(url,user,password);){
+			PreparedStatement statement=connection.prepareStatement(query);
+			statement.setInt(1, bookId);
+			ResultSet book=statement.executeQuery();
+			while(book.next()) {
+				int book_Id=book.getInt("BookId");
+				String title=book.getString("Title");
+				String author=book.getString("Author");
+				String category=book.getString("Category");
+				char status=book.getString("BookStatus").charAt(0);
+				char availability=book.getString("Availability").charAt(0);
+				resultedbook=new Book(book_Id, title , author, category, status, availability);
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("BookId Not Existed");
+		}
+		return resultedbook;
+	}
 	
 	
 }

@@ -10,23 +10,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lms.controller.AddNewMemberController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="736.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lms.controller.AddNewMemberController">
    <children>
-      <Label layoutX="228.0" layoutY="36.0" text="Add New Member" textFill="#2196f3">
+      <Label layoutX="404.0" layoutY="36.0" prefHeight="35.0" prefWidth="386.0" text="Add New Member" textFill="#2196f3">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <VBox layoutX="73.0" layoutY="100.0" prefHeight="220.0" prefWidth="439.0">
+      <VBox layoutX="245.0" layoutY="186.0" prefHeight="217.0" prefWidth="551.0">
          <children>
             <HBox prefHeight="41.0" prefWidth="439.0">
                <children>
-                  <Label prefHeight="42.0" prefWidth="126.0" text="Name:" textFill="#4b8cb7">
+                  <Label prefHeight="42.0" prefWidth="118.0" text="Name:" textFill="#4b8cb7">
                      <font>
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="nameField" prefHeight="48.0" prefWidth="335.0" promptText="Enter Your Name" />
+                  <TextField fx:id="nameField" prefHeight="42.0" prefWidth="325.0" promptText="Enter Your Name" />
                </children>
             </HBox>
             <HBox prefHeight="46.0" prefWidth="439.0">
@@ -71,12 +71,12 @@
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="submitButton" contentDisplay="CENTER" layoutX="241.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: #4CAF50;" text="Submit" textFill="WHITE">
+      <Button fx:id="submitButton" contentDisplay="CENTER" layoutX="424.0" layoutY="453.0" mnemonicParsing="false" onAction="#handleSubmit" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: #4CAF50;" text="Submit" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="cancelButton" layoutX="337.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: #f44336;" text="Cancel" textFill="#fff8f8">
+      <Button fx:id="cancelButton" layoutX="570.0" layoutY="453.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: #f44336;" text="Cancel" textFill="#fff8f8">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
