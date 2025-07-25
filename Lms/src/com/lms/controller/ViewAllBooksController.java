@@ -63,7 +63,7 @@ public class ViewAllBooksController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("book_Status"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("book_Availability"));
         
-        // Configure action column with update button
+        //Configure action column with update button
         actionColumn.setCellFactory(param -> new UpdateButtonCell());
 
         bookTable.setItems(bookList);

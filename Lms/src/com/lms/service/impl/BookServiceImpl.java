@@ -1,6 +1,8 @@
 package com.lms.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.lms.dao.BookDao;
 import com.lms.dao.DataBookDao;
@@ -73,6 +75,11 @@ public class BookServiceImpl implements BookService{
 		}
 	}
 	
+	public Map<String,Long> getBooksByCategory() {
+		Map<String,Long> categoryMap = bookDao.getAllBooks().stream()
+										.collect(Collectors.groupingBy((b)->b.getBook_Category(),Collectors.counting()));
+		return categoryMap;
+	}
 
 	@Override
 	public Book getBookById(int id) {

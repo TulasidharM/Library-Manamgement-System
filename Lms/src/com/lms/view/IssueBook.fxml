@@ -1,44 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<GridPane alignment="CENTER" hgap="10" prefHeight="300" prefWidth="400" stylesheets="@IssueBook.css" vgap="15" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lms.controller.IssueBookController">
+<VBox fx:controller="com.lms.controller.IssueBookController"
+      xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      alignment="CENTER"
+      prefHeight="800"
+      prefWidth="1000"
+      spacing="30"
+      style="-fx-background-color: linear-gradient(to bottom right, #ffffff, #f0f0f0);">
+
     <padding>
-        <Insets bottom="20" left="20" right="20" top="20" />
+        <Insets top="40" right="60" bottom="40" left="60"/>
     </padding>
-    <Text fill="#f2450c" fontSmoothingType="LCD" styleClass="title-text" text="Issue Book" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER">
-      <font>
-         <Font name="Algerian" size="24.0" />
-      </font></Text>
-    <Label styleClass="label" text="Member:" textFill="#703fa1" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-      <font>
-         <Font name="System Bold Italic" size="14.0" />
-      </font></Label>
-    <ComboBox fx:id="memberIdComboBox" prefWidth="200" promptText="Select A Member" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-    <Label styleClass="label" text="Book:" textFill="#703fa1" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-      <font>
-         <Font name="System Bold Italic" size="14.0" />
-      </font></Label>
-    <ComboBox fx:id="bookIdComboBox" prefWidth="200" promptText="Select A Book" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    
-    <Label fx:id="errorLabel" style="-fx-text-fill: #f44336; -fx-font-size: 12px;" />
-    <HBox prefHeight="34.0" prefWidth="262.0" spacing="10" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-        <Button fx:id="issueButton" onAction="#issueButtonClick" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: #069c1a;" text="Issue" textFill="#fafcfb">
-         <font>
-            <Font name="System Bold Italic" size="14.0" />
-         </font></Button>
-        <Button fx:id="cancelButton" onAction="#cancleButtonClick" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: #f4001c;" text="Cancel" textFill="WHITE">
-         <font>
-            <Font name="System Bold Italic" size="14.0" />
-         </font></Button>
-    </HBox>
-</GridPane>
+
+    <Label text="Issue Book"
+           style="-fx-text-fill: #2c3e50;">
+        <font>
+            <Font name="System Bold" size="32.0"/>
+        </font>
+        <VBox.margin>
+            <Insets bottom="40"/>
+        </VBox.margin>
+    </Label>
+
+    <GridPane vgap="25" hgap="20" alignment="CENTER" maxWidth="800">
+        <padding>
+            <Insets left="100" right="100"/>
+        </padding>
+
+        <columnConstraints>
+            <ColumnConstraints minWidth="120" prefWidth="150"/>
+            <ColumnConstraints minWidth="300" prefWidth="400"/>
+        </columnConstraints>
+
+        <Label text="Select Member:"
+               style="-fx-font-size: 16px; -fx-font-weight: bold;"
+               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="memberIdComboBox"
+                  promptText="Select Member"
+                  style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
+                  maxWidth="Infinity"
+                  GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Select Book:"
+               style="-fx-font-size: 16px; -fx-font-weight: bold;"
+               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <ComboBox fx:id="bookIdComboBox"
+                  promptText="Select Book"
+                  style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
+                  maxWidth="Infinity"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </GridPane>
+
+    <VBox alignment="CENTER" spacing="20">
+        <Label fx:id="errorLabel"
+               style="-fx-text-fill: #e74c3c; -fx-font-size: 14px;"/>
+        <HBox spacing="30" alignment="CENTER">
+            <Button fx:id="issueButton"
+                    onAction="#issueButtonClick"
+                    text="Issue"
+                    style="-fx-min-width: 150; -fx-min-height: 45; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0); -fx-cursor: hand;"/>
+            <Button fx:id="cancelButton"
+                    onAction="#cancleButtonClick"
+                    text="Cancel"
+                    style="-fx-min-width: 150; -fx-min-height: 45; -fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0); -fx-cursor: hand;"/>
+        </HBox>
+    </VBox>
+</VBox>
