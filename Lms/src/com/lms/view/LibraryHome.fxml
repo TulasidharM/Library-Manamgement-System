@@ -57,13 +57,13 @@
                 
                 <VBox spacing="10">
                     <Label text="Members with Active Books" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
-                    <TableView VBox.vgrow="ALWAYS" prefHeight="200">
-                        <columns>
-                            <TableColumn text="Member ID" prefWidth="100"/>
-                            <TableColumn text="Name" prefWidth="200"/>
-                            <TableColumn text="Books Issued" prefWidth="150"/>
-                        </columns>
-                    </TableView>
+                    <TableView fx:id="memberBooksTable" VBox.vgrow="ALWAYS" prefHeight="200">
+					    <columns>
+					        <TableColumn text="Member ID" fx:id="memberIdColumn" prefWidth="100"/>
+					        <TableColumn text="Name" fx:id="nameColumn" prefWidth="200"/>
+					        <TableColumn text="Books Issued" fx:id="booksIssuedColumn" prefWidth="1000"/>
+					    </columns>
+					</TableView>
                 </VBox>
             </VBox>
 
@@ -79,9 +79,7 @@
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="View Members" onAction="#viewAllMembersClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="Member's Books" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
-
+                
                 <Label text="Issue/Return Management" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
                 <Button text="Issue Book" onAction="#issueBookButtonClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
@@ -89,8 +87,7 @@
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="Issued Records" onAction="#viewIssuedRecordsClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="Book's Members" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                
             </VBox>
         </HBox>
     </VBox>

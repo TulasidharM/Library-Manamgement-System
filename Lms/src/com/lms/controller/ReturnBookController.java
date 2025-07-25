@@ -15,6 +15,8 @@ import com.lms.service.impl.IssueLogServiceImpl;
 import com.lms.service.impl.MemberServiceImpl;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 
 public class ReturnBookController {
@@ -59,7 +61,6 @@ public class ReturnBookController {
 		List<String> records= IssueBookService.getAllIssuedRecords().stream()
 										.filter(r->{
 											int memberId = Integer.parseInt(memberComboBox.getValue().split("-")[0].trim());
-											System.out.println("Got member id:"+memberId);
 											return r.getMemberId() == memberId && r.getStatus() == 'I';
 										})
 										.map(r->{
@@ -74,15 +75,34 @@ public class ReturnBookController {
 	
 	@FXML
 	void returnButtonClick(){
-		int bookId = Integer.parseInt(bookComboBox.getValue().split("-")[1].trim());
-		int issueId = Integer.parseInt(bookComboBox.getValue().split("-")[0].trim());
-		bookService.updateBookAvailability(bookId,true);
-		IssueBookService.returnIssuedBook(issueId, true);
-		try {
-			Main.changePage("LibraryHome");
-		} catch (IOException e) {
-			System.out.println("Error changing to home page");
+		
+		if(bookComboBox.getValue()!= null && bookComboBox.getValue()!=null) {
+			int bookId = Integer.parseInt(bookComboBox.getValue().split("-")[1].trim());
+			int issueId = Integer.parseInt(bookComboBox.getValue().split("-")[0].trim());
+			bookService.updateBookAvailability(bookId,true);
+			
+			IssueBookService.returnIssuedBook(issueId, true);
+			createAlert(AlertType.CONFIRMATION,"Success","Return done","The selected book has been returned and has been updated!");
+
+			try {
+				Main.changePage("LibraryHome");
+			} catch (IOException e) {
+				System.out.println("Error changing to home page");
+			}
 		}
+		else {
+			createAlert(AlertType.WARNING,"Alert!","Data not selected","Please select a Member and a Book");
+			
+		}
+		
+	}
+	
+	private void createAlert(AlertType alertType,String title,String header,String content) {
+		Alert alert = new Alert(alertType);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		alert.showAndWait();
 	}
 	
 }
