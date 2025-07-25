@@ -43,11 +43,11 @@
             <ToggleGroup fx:id="statusGroup"/>
         </fx:define>
         <RadioButton fx:id="availableRadio" 
-                    text="Available (A)" 
+                    text="Active (A)" 
                     toggleGroup="$statusGroup"
                     style="-fx-font-size: 13px;"/>
         <RadioButton fx:id="issuedRadio" 
-                    text="Issued (I)" 
+                    text="Inactive (I)" 
                     toggleGroup="$statusGroup"
                     style="-fx-font-size: 13px;"/>
     </HBox>

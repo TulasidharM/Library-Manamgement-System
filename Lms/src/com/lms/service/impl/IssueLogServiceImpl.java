@@ -36,4 +36,13 @@ public class IssueLogServiceImpl implements IssueLogService{
 		}
 	}
 
+import com.lms.dao.IssueRecordDao;
+import com.lms.service.IssueLogService;
+
+public class IssueLogServiceImpl implements IssueLogService{
+	
+	@Override
+	public void returnIssuedBook(int issueId, int bookId) {
+		
+	}
 }
