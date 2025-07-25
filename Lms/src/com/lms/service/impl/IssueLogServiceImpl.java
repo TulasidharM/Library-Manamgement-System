@@ -48,7 +48,6 @@ public class IssueLogServiceImpl implements IssueLogService{
 		issueRecordDao.updateIssueRecord(issueId, isReturned);
 	}
 	
-
 	@Override
 	public List<Issue_Records> getAllIssuedRecords() {
 		return issueRecordDao.getAllIssuedRecords();

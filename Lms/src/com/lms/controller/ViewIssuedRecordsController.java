@@ -4,6 +4,8 @@ import com.lms.main.Main;
 import com.lms.model.Issue_Records;
 import com.lms.service.IssueLogService;
 import com.lms.service.impl.IssueLogServiceImpl;
+
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 public class ViewIssuedRecordsController {
@@ -50,15 +53,17 @@ public class ViewIssuedRecordsController {
     	
     	service = new IssueLogServiceImpl();
     	List<Issue_Records> issuedRecords = service.getAllIssuedRecords();
-    	
     	updaterecordsList(issuedRecords);
         id.setCellValueFactory(new PropertyValueFactory<>("issueId"));
         book_id.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         member_id.setCellValueFactory(new PropertyValueFactory<>("memberId"));
         issue_status.setCellValueFactory(new PropertyValueFactory<>("status"));
         issued_date.setCellValueFactory(new PropertyValueFactory<>("issueDate"));
-        returned_date.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
-        
+        //returned_date.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
+        returned_date.setCellValueFactory(cellData -> {
+            Date date = cellData.getValue().getReturnDate();
+            return new ReadOnlyObjectWrapper<>(date != null ? date.toString() : "Not Yet Returned ");
+        });
         issueRecordsTable.setItems(issuedRecordList);
     } 
 
