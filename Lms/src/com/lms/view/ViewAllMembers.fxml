@@ -17,6 +17,7 @@
             <TableColumn fx:id="mobile" text="Mobile_Number" prefWidth="150"/>
             <TableColumn fx:id="gender" text="Gender" prefWidth="100"/>
             <TableColumn fx:id="address" text="Address" prefWidth="100"/>
+            <TableColumn fx:id="actionColumn" text="Action" prefWidth="100"/>
         </columns>
     </TableView>
 

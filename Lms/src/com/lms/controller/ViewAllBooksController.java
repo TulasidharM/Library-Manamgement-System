@@ -8,18 +8,17 @@ import com.lms.service.impl.BookServiceImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.util.List;
 
 public class ViewAllBooksController {
-	
-	BookService bookService;
+    
+    BookService bookService;
     
     @FXML
     private TableView<Book> bookTable;
@@ -43,28 +42,110 @@ public class ViewAllBooksController {
     private TableColumn<Book, String> availabilityColumn;
     
     @FXML
+    private TableColumn<Book, Void> actionColumn;
+    
+    @FXML
     private Button backButton;
     
     private ObservableList<Book> bookList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-    	
-    	bookService = new BookServiceImpl();
-    	List<Book> books = bookService.getAllBooks();
-    	
-    	updateBookList(books);
-    	
-        // Update PropertyValueFactory to match exact property names from Book class
+        bookService = new BookServiceImpl();
+        List<Book> books = bookService.getAllBooks();
+        
+        updateBookList(books);
+        
         idColumn.setCellValueFactory(new PropertyValueFactory<>("book_Id"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("book_Title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("book_Author"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("book_Category"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("book_Status"));
         availabilityColumn.setCellValueFactory(new PropertyValueFactory<>("book_Availability"));
+        
+        // Configure action column with update button
+        actionColumn.setCellFactory(param -> new UpdateButtonCell());
 
         bookTable.setItems(bookList);
+    }
+    
+    private class UpdateButtonCell extends TableCell<Book, Void> {
+        private final Button updateButton = new Button("Update");
 
+        public UpdateButtonCell() {
+            updateButton.setOnAction(event -> {
+                Book book = getTableView().getItems().get(getIndex());
+                showUpdateDialog(book);
+            });
+        }
+
+        @Override
+        protected void updateItem(Void item, boolean empty) {
+            super.updateItem(item, empty);
+            setGraphic(empty ? null : updateButton);
+        }
+    }
+
+    private void showUpdateDialog(Book book) {
+        Dialog<Book> dialog = new Dialog<>();
+        dialog.setTitle("Update Book");
+        dialog.setHeaderText("Update book information");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/lms/view/UpdateBookDialog.fxml"));
+            GridPane dialogPane = loader.load();
+
+            TextField titleField = (TextField) dialogPane.lookup("#titleField");
+            TextField authorField = (TextField) dialogPane.lookup("#authorField");
+            TextField availabilityField = (TextField) dialogPane.lookup("#availabilityField");
+            RadioButton availableRadio = (RadioButton) dialogPane.lookup("#availableRadio");
+            RadioButton issuedRadio = (RadioButton) dialogPane.lookup("#issuedRadio");
+            ComboBox<String> categoryComboBox = (ComboBox<String>) dialogPane.lookup("#categoryComboBox");
+            categoryComboBox.getItems().addAll(
+                    "Fiction",
+                    "Non-Fiction",
+                    "Science",
+                    "Technology",
+                    "History",
+                    "Biography"
+                );
+            
+            // populate the current values of the book
+            titleField.setText(book.getBook_Title());
+            authorField.setText(book.getBook_Author());
+            availabilityField.setText(String.valueOf(book.getBook_Availability()));
+            categoryComboBox.setValue(book.getBook_Category());
+            if (book.getBook_Status() == 'A') {
+                availableRadio.setSelected(true);
+            } else {
+                issuedRadio.setSelected(true);
+            }
+
+            dialog.getDialogPane().setContent(dialogPane);
+
+            ButtonType updateButtonType = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
+
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == updateButtonType) {
+                    book.setBook_Title(titleField.getText());
+                    book.setBook_Author(authorField.getText());
+                    book.setBook_Category(categoryComboBox.getValue());
+                    book.setBook_Status(availableRadio.isSelected() ? 'A' : 'I');
+                    return book;
+                }
+                return null;
+            });
+
+            dialog.showAndWait().ifPresent(updatedBook -> {
+                bookService.updateBook(updatedBook);
+                bookTable.refresh();
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error loading update dialog FXML: " + e.getMessage());
+        }
     }
     
     public void updateBookList(List<Book> books) {
@@ -72,13 +153,12 @@ public class ViewAllBooksController {
         bookList.addAll(books);
     }
     
-    
     @FXML
     private void handleBackButton() {
         try {
-			Main.changePage("LibraryHome");
-		} catch (IOException e) {
-			System.out.println("Had a problem with going back to main: " + e.getMessage());
-		}
+            Main.changePage("LibraryHome");
+        } catch (IOException e) {
+            System.out.println("Had a problem with going back to main: " + e.getMessage());
+        }
     }
 }

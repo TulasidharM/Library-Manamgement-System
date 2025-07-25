@@ -17,8 +17,38 @@ public class MemberServiceImpl implements MemberService{
 	
     @Override
     public void addNewMember(Member member) {
-    	
-        if (member.getMember_Name() == null || member.getMember_Name().trim().isEmpty()) {
+    	try {
+    		validateMember(member);
+    		memberDao.insertMember(member);
+    	}catch(IllegalArgumentException e) {
+    		System.out.println(e.getMessage());
+    	}
+        
+        
+    }
+    
+
+	
+
+
+	@Override
+	public List<Member> getAllMembers() {
+		return memberDao.fetchAllMembers();
+	}
+	
+	@Override
+	public void updateMember(Member member) {
+		try {
+			validateMember(member);
+			memberDao.updateMember(member);
+		}catch(IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
+	private void validateMember(Member member) throws IllegalArgumentException {
+		if (member.getMember_Name() == null || member.getMember_Name().trim().isEmpty()) {
             throw new IllegalArgumentException("Member name cannot be empty");
         }
 
@@ -37,14 +67,6 @@ public class MemberServiceImpl implements MemberService{
         if (member.getAddress() == null || member.getAddress().trim().isEmpty()) {
             throw new IllegalArgumentException("Address cannot be empty");
         }
-       
-        memberDao.insertMember(member);
-    }
-
-
-	@Override
-	public List<Member> getAllMembers() {
-		return memberDao.fetchAllMembers();
 	}
 
 }

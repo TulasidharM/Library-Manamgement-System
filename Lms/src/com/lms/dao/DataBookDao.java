@@ -15,8 +15,9 @@ public class DataBookDao implements BookDao {
 	
 	private static final String url="jdbc:mysql://localhost:3306/library";
 	private static final String user="root";
-	private static final String password="Ashok@99122";
+	private static final String password="root@pokemon";
 	
+	@Override
 	public Book addBook(Book newBook) {
 		String query="INSERT INTO books(Title,Author,Category,BookStatus,Availability) VALUES (?,?,?,?,?);";
 		try (Connection connection=DriverManager.getConnection(url,user,password);){
@@ -64,13 +65,34 @@ public class DataBookDao implements BookDao {
 				Book book=new Book(bookId, title , author, category, status, availability);
 				books.add(book);
 			}
-			
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 		return books;
 	}
+
+
+	@Override
+	public void updateBook(Book book) {
+	    String query = "UPDATE books SET Title=?, Author=?, Category=?, BookStatus=? WHERE BookId=?";
+	    try (Connection connection = DriverManager.getConnection(url, user, password)) {
+	        PreparedStatement statement = connection.prepareStatement(query);
+	        statement.setString(1, book.getBook_Title());
+	        statement.setString(2, book.getBook_Author());
+	        statement.setString(3, book.getBook_Category());
+	        statement.setString(4, String.valueOf(book.getBook_Status()));
+	        statement.setInt(5, book.getBook_Id());
+	        
+	        int rowsAffected = statement.executeUpdate();
+	        if (rowsAffected == 0) {
+	            throw new SQLException("Book update failed, no rows affected.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error updating book: " + e.getMessage());
+	    }
+	}
+
+	
 	
 	
 }

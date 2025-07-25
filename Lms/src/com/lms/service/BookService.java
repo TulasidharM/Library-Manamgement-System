@@ -8,4 +8,5 @@ public interface BookService {
 	public void addNewBook(Book newBook);
 	public List<Book> getAllBooks();
 	public void updateBookAvailability(Book book);
+	public void updateBook(Book book);
 }

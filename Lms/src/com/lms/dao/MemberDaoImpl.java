@@ -14,7 +14,7 @@ public class MemberDaoImpl implements MemberDao {
     
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "Ashok@99122";
+    private static final String password = "root@pokemon";
 
     @Override
     public void insertMember(Member newMember) {
@@ -65,4 +65,31 @@ public class MemberDaoImpl implements MemberDao {
         
         return members;
     }
+    
+    @Override
+    public void updateMember(Member member) {
+        String query = "UPDATE members SET Name=?, Email=?, Mobile=?, Gender=?, Address=? WHERE MemberId=?";
+        
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            
+            statement.setString(1, member.getMember_Name());
+            statement.setString(2, member.getEmail());
+            statement.setInt(3, member.getMobile_No());
+            statement.setString(4, String.valueOf(member.getGender()));
+            statement.setString(5, member.getAddress());
+            statement.setInt(6, member.getMember_Id());
+            
+            int rowsAffected = statement.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Failed to update member: Member not found");
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error updating member: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

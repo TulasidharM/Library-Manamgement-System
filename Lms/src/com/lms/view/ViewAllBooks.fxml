@@ -17,6 +17,7 @@
             <TableColumn fx:id="categoryColumn" text="Category" prefWidth="150"/>
             <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
             <TableColumn fx:id="availabilityColumn" text="Availability" prefWidth="100"/>
+			<TableColumn fx:id="actionColumn" text="Action" prefWidth="100"/>
         </columns>
     </TableView>
 
