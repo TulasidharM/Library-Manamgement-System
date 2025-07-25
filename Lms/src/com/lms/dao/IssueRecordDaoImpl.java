@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.lms.exceptions.IdNotExistException;
 import com.lms.model.Issue_Records;
@@ -121,7 +123,6 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	            String title = recordList.getString("Title");
 	            String memberName = recordList.getString("Member");
 	            Date dueDate = recordList.getDate("DueDate");
-	            System.out.println(dueDate);
 	            OverDueList overdueRecord = new OverDueList(issueId, bookId, title, memberName, dueDate);
 	            duerecordsList.add(overdueRecord);
 	        }
@@ -129,7 +130,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	        System.out.println("Error executing join query: " + e.getMessage());
 	    }
 	    
-	    return duerecordsList;
+	    return duerecordsList.stream().filter(record->record.getOverDueDate().before(Date.valueOf(LocalDate.now()))).collect(Collectors.toList());
 	}
 
 	
