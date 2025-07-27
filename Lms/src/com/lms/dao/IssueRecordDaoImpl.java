@@ -6,13 +6,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.lms.exceptions.IdNotExistException;
+import com.lms.model.Book;
 import com.lms.model.Issue_Records;
 import com.lms.model.OverDueList;
 
@@ -24,20 +25,33 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
     
 	@Override
 	public void addIssueRecord(Issue_Records newRecord) {
-		String query="INSERT INTO issue_records(BookId,MemberId,Status,IssueDate,ReturnDate) VALUES (?,?,?,?,?);";
-		 try (Connection connection = DriverManager.getConnection(url, user, password)) {
-	            PreparedStatement statement = connection.prepareStatement(query);
-	            statement.setInt(1, newRecord.getBookId());
-	            statement.setInt(2, newRecord.getMemberId());
-	            statement.setString(3, String.valueOf(newRecord.getStatus()));
-	            statement.setDate(4,newRecord.getIssueDate());
-	            statement.setDate(5, newRecord.getReturnDate());
-	            int rowsAffected = statement.executeUpdate();
-	            
-	            if (rowsAffected == 0) {
-	                throw new SQLException("SQL ERROR: Failed to insert issueRecord");
-	            }
-		 } catch (SQLException e) {
+	    int bookId=newRecord.getBookId();
+	    Book book=new DataBookDao().getBookById(bookId);
+		char status=book.getBook_Status();
+		char available=book.getBook_Availability();
+		try{
+		    if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))){
+				String query="INSERT INTO issue_records(BookId,MemberId,Status,IssueDate,ReturnDate) VALUES (?,?,?,?,?);";
+				try (Connection connection = DriverManager.getConnection(url, user, password)) {
+				      PreparedStatement statement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+				     statement.setInt(1, newRecord.getBookId());
+					 statement.setInt(2, newRecord.getMemberId());
+			         statement.setString(3, String.valueOf(newRecord.getStatus()));
+			         statement.setDate(4,newRecord.getIssueDate());
+					 statement.setDate(5, newRecord.getReturnDate());
+					 int rowsAffected = statement.executeUpdate();            
+			         if (rowsAffected == 0) {
+			        	 throw new SQLException("SQL ERROR: Failed to insert issueRecord");
+					 }    
+					 try (ResultSet generatedKey = statement.getGeneratedKeys()){
+						 if(generatedKey.next()) {
+							 newRecord.setIssueId(generatedKey.getInt(1));
+						}
+					}			
+				} 
+			}
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -87,7 +101,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 		}
 	}
 	
-	
+	@Override
 	public void addIssue_Records_Log(Issue_Records record) {
 		String query="INSERT INTO issue_records_log(IssueId,BookId,MemberId,Status,IssueDate,ReturnDate) VALUES (?,?,?,?,?,?);";
 		try(Connection connection=DriverManager.getConnection(url,user,password);){
@@ -109,7 +123,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 		}
 		
 	}
-	
+	@Override
 	public List<OverDueList> getOverdueRecords() {
 	    String query = "SELECT ir.IssueId, ir.BookId, b.Title, m.Name AS Member, DATE_ADD(ir.IssueDate, INTERVAL 30 DAY) AS DueDate FROM issue_records ir JOIN members m ON ir.MemberId = m.MemberId JOIN books b ON ir.BookId = b.BookId WHERE ir.Status = 'I';";
 	    List<OverDueList> duerecordsList = new ArrayList<>();
@@ -133,7 +147,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	    return duerecordsList.stream().filter(record->record.getOverDueDate().before(Date.valueOf(LocalDate.now()))).collect(Collectors.toList());
 	}
 
-	
+	@Override
 	public Issue_Records getRecordById(int issueId) {
 		String query="SELECT IssueId,BookId,MemberId,Status,IssueDate,ReturnDate FROM issue_records WHERE IssueId=?;";
 		Issue_Records record = null;
@@ -167,7 +181,4 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 		}
 		return record;
 	}
-	
-	
-
 }

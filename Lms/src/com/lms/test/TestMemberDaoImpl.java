@@ -1,0 +1,169 @@
+package com.lms.test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import com.lms.dao.MemberDao;
+import com.lms.dao.MemberDaoImpl;
+import com.lms.model.Member;
+
+public class TestMemberDaoImpl {
+	private static final String url = "jdbc:mysql://localhost:3306/library";
+    private static final String user = "root";
+    private static final String password = "Ashok@99122";
+	private MemberDao memberDao;
+  
+	@Before
+    public void setUp() {
+        memberDao = new MemberDaoImpl();
+	}    
+	
+	@Test 
+	public void testInsertMember() { 
+		String name = "Test User"; 
+	    String email = "testuser@example.com"; 
+		int mobile = 1444389229; 
+	    char gender = 'M';
+	    String address = "my Street"; 
+	    Member newMember = new Member(name, email, mobile, gender, address); 
+	    memberDao.insertMember(newMember); 
+	    int memberId=newMember.getMember_Id(); 
+	    String query = "SELECT * FROM members WHERE MemberId= ?"; 
+	    try (Connection conn = DriverManager.getConnection(url, user, password); 
+	    	PreparedStatement stmt = conn.prepareStatement(query)) { 
+	    	stmt.setInt(1, memberId); 
+			ResultSet rs = stmt.executeQuery();
+		    assertTrue("Inserted member should exist in the DB", rs.next()); 
+		    assertEquals(name, rs.getString("Name")); 
+		    assertEquals(email,rs.getString("Email")); 
+		    assertEquals(mobile, rs.getInt("Mobile"));
+		    assertEquals(String.valueOf(gender), rs.getString("Gender"));
+			assertEquals(address, rs.getString("Address"));
+	    } 
+	    catch (SQLException e) {
+	    	fail("SQLException during test: " + e.getMessage()); 
+		}
+	}
+	 
+	@Test
+    public void testFetchAllMembers() {
+		String name = "Test Name";
+	    String email = "test@example.com";
+	    int mobile = 1445733229;
+	    char gender = 'F';
+	    String address = "my City";
+	    Member member = new Member(name, email, mobile, gender, address);
+	    memberDao.insertMember(member);
+	    List<Member> members = memberDao.fetchAllMembers();
+	    assertNotNull("Member list should not be null", members);
+	    assertTrue("Member list should contain at least one record", members.size() > 0);
+	    boolean flag = false;
+	    for (Member m : members) {
+	    	if (m.getMember_Id()==member.getMember_Id()) {
+	    		flag = true;
+	            assertEquals(name, m.getMember_Name());
+	            assertEquals(email, m.getEmail());
+	            assertEquals(mobile, m.getMobile_No());
+	            assertEquals(gender, m.getGender());
+	            assertEquals(address, m.getAddress());
+	            break;
+	        }
+	    }
+	    assertTrue("Test member should be found in the fetched list", flag);
+	}
+	
+	@Test
+	public void testUpdateMember() {
+		String name = "my Name";
+	    String email = "me@example.com";
+	    int mobile = 1114577229;
+	    char gender = 'M';
+        String address = "myCity";
+	    Member member = new Member(name, email, mobile, gender, address);
+        memberDao.insertMember(member);
+	    String updatedName = "other Name";
+	    String updatedEmail = "notme@example.com";
+        int updatedMobile = 1111111229;
+	    char updatedGender = 'F';
+	    String updatedAddress = "other City";
+	    member.setMember_Name(updatedName);
+	    member.setEmail(updatedEmail);
+        member.setMobile_No(updatedMobile);
+	    member.setGender(updatedGender);
+	    member.setAddress(updatedAddress);
+	    memberDao.updateMember(member);
+	    String query = "SELECT * FROM members WHERE MemberId = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, member.getMember_Id());
+            ResultSet rs = stmt.executeQuery();
+            assertTrue("Member should exist after update", rs.next());
+            assertEquals(updatedName, rs.getString("Name"));
+            assertEquals(updatedEmail, rs.getString("Email"));
+            assertEquals(updatedMobile, rs.getInt("Mobile"));
+            assertEquals(updatedGender, rs.getString("Gender").charAt(0));
+            assertEquals(updatedAddress, rs.getString("Address"));
+
+        } catch (SQLException e) {
+        	e.printStackTrace();
+            fail("SQLException during updateBook test: " + e.getMessage());
+        }
+	}
+	
+	@Test
+    public void testAddMemberLogs() {
+        int memberId = 150;
+        String name = "abc";
+        String email = "abc@example.com";
+        int mobile = 1222222229;
+        char gender = 'M';
+        String address = "123 Street";
+        Member member = new Member(memberId, name, email, mobile, gender, address);
+        memberDao.addMemberLogs(member);
+        String query = "SELECT * FROM members_log WHERE MemberId = ?";
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, member.getMember_Id());
+            ResultSet rs = stmt.executeQuery();
+            assertTrue("Member log should exist after insertion", rs.next());
+            assertEquals(memberId, rs.getInt("MemberId"));
+            assertEquals(name, rs.getString("Name"));
+            assertEquals(email, rs.getString("Email"));
+            assertEquals(mobile, rs.getInt("Mobile"));
+            assertEquals(String.valueOf(gender), rs.getString("Gender"));
+            assertEquals(address, rs.getString("Address"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail("SQLException during testAddMemberLogs: " + e.getMessage());
+        }
+    }
+	
+	@Test
+    public void testGetMemberById() {
+        String name = "xyz";
+        String email = "xyz@example.com";
+        int mobile = 1234562229;
+        char gender = 'M';
+        String address = "xyz street";
+        Member member = new Member(name, email, mobile, gender, address);
+        memberDao.insertMember(member); 
+        Member Resultedmember = memberDao.getMemberById(member.getMember_Id());
+        assertNotNull("Member should be found", Resultedmember);
+        assertEquals("Member ID should match", member.getMember_Id(), Resultedmember.getMember_Id());
+        assertEquals("Name should match", name, Resultedmember.getMember_Name());
+        assertEquals("Email should match", email, Resultedmember.getEmail());
+        assertEquals("Mobile should match", mobile, Resultedmember.getMobile_No());
+        assertEquals("Gender should match", gender, Resultedmember.getGender());
+        assertEquals("Address should match", address, Resultedmember.getAddress());
+    }
+	
+	
+	
+}

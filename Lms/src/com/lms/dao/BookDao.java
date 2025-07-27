@@ -10,5 +10,6 @@ public interface BookDao {
 	List<Book> getAllBooks();
 	void updateBook(Book book);
 	void updateBookAvailability(int bookId,boolean isavalable);
+	public void addBookLogs(Book book);
 	Book getBookById(int bookId);
 }

@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +16,13 @@ public class DataBookDao implements BookDao {
 	
 	private static final String url="jdbc:mysql://localhost:3306/library";
 	private static final String user="root";
-	private static final String password="root@pokemon";
+	private static final String password="Ashok@99122";
 	
 	@Override
 	public Book addBook(Book newBook) {
 		String query="INSERT INTO books(Title,Author,Category,BookStatus,Availability) VALUES (?,?,?,?,?);";
 		try (Connection connection=DriverManager.getConnection(url,user,password);){
-			PreparedStatement statement=connection.prepareStatement(query);
+			PreparedStatement statement=connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1,newBook.getBook_Title());
 			statement.setString(2, newBook.getBook_Author());
 			statement.setString(3, newBook.getBook_Category());
@@ -161,6 +162,7 @@ public class DataBookDao implements BookDao {
 		}
 		return resultedbook;
 	}
+	
 	
 	
 }

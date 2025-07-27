@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,13 @@ public class MemberDaoImpl implements MemberDao {
     
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "root@pokemon";
+    private static final String password = "Ashok@99122";
 
     @Override
     public void insertMember(Member newMember) {
         String query = "INSERT INTO members(Name, Email, Mobile, Gender, Address) VALUES (?, ?, ?, ?, ?);";
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, newMember.getMember_Name());
             statement.setString(2, newMember.getEmail());
             statement.setInt(3, newMember.getMobile_No());
@@ -31,6 +32,15 @@ public class MemberDaoImpl implements MemberDao {
             
             if (rowsAffected == 0) {
                 throw new SQLException("SQL ERROR: Failed to insert member");
+            }
+            
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    newMember.setMember_Id(generatedId);
+                } else {
+                    throw new SQLException("Failed to retrieve generated Member ID.");
+                }
             }
             
         } catch (SQLException e) {
@@ -90,7 +100,8 @@ public class MemberDaoImpl implements MemberDao {
             System.out.println("Error updating member: " + e.getMessage());
         }
     }
-
+    
+    @Override
     public void addMemberLogs(Member member) {
     	String query = "INSERT INTO members_log(MemberId,Name,Email,Mobile,Gender,Address) VALUES (?,?,?,?,?,?);";
     	try (Connection connection = DriverManager.getConnection(url, user, password);){

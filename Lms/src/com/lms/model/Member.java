@@ -54,6 +54,9 @@ public class Member {
 	public int getMember_Id() {
 		return member_Id;
 	}
+	public void setMember_Id(int member_Id) {
+		this.member_Id = member_Id;
+	}
 
 	public String getAddress() {
 		return address;
