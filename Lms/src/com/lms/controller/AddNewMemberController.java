@@ -55,7 +55,7 @@ public class AddNewMemberController {
             showAlert("Error", "Please fill in all fields!");
             return;
         }
-        
+       
         if (!isValidEmail(email)) {
             showAlert("Error", "Please enter a valid email address!");
             return;
@@ -77,10 +77,10 @@ public class AddNewMemberController {
     public void handleCancel(ActionEvent event) {
         clearForm();
     }
-    
+   
     public void saveMember(String name, String email, String mobile, String gender, String address) {
         
-        Member member=new Member(name, email, Integer.parseInt(mobile),gender.charAt(0), address);
+        Member member=new Member(name, email, mobile,gender.charAt(0), address);
         service.addNewMember(member);
         
         try {

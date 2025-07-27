@@ -19,7 +19,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 public class IssueBookController {
-	
+
 	static MemberService memberService;
 	static BookService bookService;
 	static IssueLogService issueLogService;
@@ -49,7 +49,7 @@ public class IssueBookController {
 	}
 	
 	@FXML
-	public void issueButtonClick() throws EmptyFieldsException{
+	public void issueButtonClick() {
 		try {
 			String member = memberIdComboBox.getValue();
 			String book = bookIdComboBox.getValue();
@@ -68,7 +68,12 @@ public class IssueBookController {
 	}
 	
 	@FXML
-	public void cancleButtonClick() throws IOException {
-		Main.changePage("LibraryHome"); 
+	public void cancleButtonClick() {
+		try {
+			Main.changePage("LibraryHome");
+		} catch (IOException e) {
+			System.out.println("Problem with going to home page");
+
+		} 
 	}
 }

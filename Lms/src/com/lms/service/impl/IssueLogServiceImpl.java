@@ -22,7 +22,7 @@ public class IssueLogServiceImpl implements IssueLogService{
 	private BookDao bookDao;
 	private MemberDao memberDao;
 	private IssueRecordDao issueRecordDao;
-	
+
 	public IssueLogServiceImpl() {
 		this.bookDao = new DataBookDao();
 		this.memberDao=new MemberDaoImpl();
@@ -49,7 +49,15 @@ public class IssueLogServiceImpl implements IssueLogService{
 	
 	//TODO: add validation , make sure the record exists
 	public void returnIssuedBook(int issueId, boolean isReturned) {
-		issueRecordDao.updateIssueRecord(issueId, isReturned);
+		Issue_Records issue = issueRecordDao.getRecordById(issueId);
+		if(issue == null) {
+			
+			return;
+		}
+		if(issue.getStatus() == 'I') {
+			issueRecordDao.updateIssueRecord(issueId, isReturned);
+		}
+		
 	}
 	
 	

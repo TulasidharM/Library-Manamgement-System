@@ -4,13 +4,13 @@ public class Member {
 	private int member_Id;
 	private String member_Name;
 	private String email;
-	private int mobile_No;
+	private String mobile_No;
 	private char gender;
 	private String address;
 	
 	
 	
-	public Member(String member_Name, String email, int mobile_No, char gender,String address) {
+	public Member(String member_Name, String email, String mobile_No, char gender,String address) {
 		this.member_Name = member_Name;
 		this.email = email;
 		this.mobile_No = mobile_No;
@@ -18,7 +18,7 @@ public class Member {
 		this.setAddress(address);
 	}
 
-	public Member(int member_Id, String member_Name, String email, int mobile_No, char gender,String address) {
+	public Member(int member_Id, String member_Name, String email, String mobile_No, char gender,String address) {
 		this.member_Id = member_Id;
 		this.member_Name = member_Name;
 		this.email = email;
@@ -39,10 +39,10 @@ public class Member {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getMobile_No() {
+	public String getMobile_No() {
 		return mobile_No;
 	}
-	public void setMobile_No(int mobile_No) {
+	public void setMobile_No(String mobile_No) {
 		this.mobile_No = mobile_No;
 	}
 	public char getGender() {

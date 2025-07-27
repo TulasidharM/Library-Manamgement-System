@@ -15,7 +15,7 @@ public class MemberDaoImpl implements MemberDao {
     
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "Ashok@99122";
+    private static final String password = "root@pokemon";
 
     @Override
     public void insertMember(Member newMember) {
@@ -24,7 +24,7 @@ public class MemberDaoImpl implements MemberDao {
             PreparedStatement statement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, newMember.getMember_Name());
             statement.setString(2, newMember.getEmail());
-            statement.setInt(3, newMember.getMobile_No());
+            statement.setString(3, newMember.getMobile_No());
             statement.setString(4, String.valueOf(newMember.getGender()));
             statement.setString(5, newMember.getAddress());
             
@@ -60,7 +60,7 @@ public class MemberDaoImpl implements MemberDao {
             while (membersList.next()) {
                 int memberId = membersList.getInt("MemberId");
                 String name = membersList.getString("Name");
-                int phone = membersList.getInt("Mobile");
+                String phone = membersList.getString("Mobile");
                 String email = membersList.getString("Email");
                 String address = membersList.getString("Address");
                 char gender = membersList.getString("Gender").charAt(0);
@@ -85,7 +85,7 @@ public class MemberDaoImpl implements MemberDao {
             
             statement.setString(1, member.getMember_Name());
             statement.setString(2, member.getEmail());
-            statement.setInt(3, member.getMobile_No());
+            statement.setString(3, member.getMobile_No());
             statement.setString(4, String.valueOf(member.getGender()));
             statement.setString(5, member.getAddress());
             statement.setInt(6, member.getMember_Id());
@@ -109,7 +109,7 @@ public class MemberDaoImpl implements MemberDao {
 			statement.setInt(1, member.getMember_Id());
 			statement.setString(2, member.getMember_Name());
             statement.setString(3, member.getEmail());
-            statement.setInt(4, member.getMobile_No());
+            statement.setString(4, member.getMobile_No());
             statement.setString(5, String.valueOf(member.getGender()));
             statement.setString(6, member.getAddress());
             
@@ -135,7 +135,7 @@ public class MemberDaoImpl implements MemberDao {
             if(resultMember.next()) {
             	int member_Id = resultMember.getInt("MemberId");
                 String name = resultMember.getString("Name");
-                int phone = resultMember.getInt("Mobile");
+                String phone = resultMember.getString("Mobile");
                 String email = resultMember.getString("Email");
                 String address = resultMember.getString("Address");
                 char gender = resultMember.getString("Gender").charAt(0);

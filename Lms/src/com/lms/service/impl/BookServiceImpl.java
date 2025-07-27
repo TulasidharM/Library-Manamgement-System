@@ -17,7 +17,7 @@ public class BookServiceImpl implements BookService{
 		this.bookDao = new DataBookDao();
 	}
 	
-	
+
 	@Override
 	public void addNewBook(Book newBook) {
 		try {
@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService{
 		if(bookAvailability== '\u0000' || (bookAvailability!='A' && bookAvailability!='I')) {
 			throw new DBConstrainsException("Entered An Invalid Book Availability");
 		}
-		
+	
 	}
 	
 	@Override

@@ -17,12 +17,9 @@ import javafx.scene.control.TextField;
 
 public class AddNewBookController {
 	
-	static BookService bookService;
+	BookService bookService;
 	
-	static {
-		bookService = new BookServiceImpl();
-	}
-	
+
 	@FXML
 	TextField titleField;
 	@FXML
@@ -34,6 +31,8 @@ public class AddNewBookController {
 	
 	@FXML
 	public void initialize() {
+		bookService = new BookServiceImpl();
+
 		categoryComboBox.getItems().addAll(
 	            "Fiction",
 	            "Non-Fiction",

@@ -14,7 +14,7 @@ public class TestBookDaoImpl {
 
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "Ashok@99122";
+    private static final String password = "root@pokemon";
     private BookDao bookDao;
 
     @Before
@@ -102,7 +102,7 @@ public class TestBookDaoImpl {
             fail("SQLException during updateBook test: " + e.getMessage());
         }
     }
-    
+   
     @Test
     public void testAddBookLogs() {
     	int bookId=11;
@@ -155,7 +155,7 @@ public class TestBookDaoImpl {
             fail("Verification failed: " + e.getMessage());
         }
     }
-
+    
     @Test
     public void testGetBookById() {
         int bookId = 601;

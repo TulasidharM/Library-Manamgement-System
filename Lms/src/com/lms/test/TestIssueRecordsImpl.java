@@ -16,14 +16,14 @@ import java.util.List;
 public class TestIssueRecordsImpl {
 	 private static final String url = "jdbc:mysql://localhost:3306/library";
 	 private static final String user = "root";
-	 private static final String password = "Ashok@99122";
+	 private static final String password = "root@pokemon";
 	 private IssueRecordDao issueRecordDao;
 
 	    @Before
 	    public void setUp() {
 	    	issueRecordDao = new IssueRecordDaoImpl();
 	    }
-	    
+	   
 	    @Test
 	    public void testAddIssueRecord() {
 	        int bookId = 150; 

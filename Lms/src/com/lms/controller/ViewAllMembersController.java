@@ -58,7 +58,6 @@ public class ViewAllMembersController {
     
     private ObservableList<Member> membersList = FXCollections.observableArrayList();
     
-
     @FXML
     public void initialize() {
     	
@@ -96,7 +95,7 @@ public class ViewAllMembersController {
             setGraphic(empty ? null : updateButton);
         }
     }
-
+    
     // Add the showUpdateDialog method
     private void showUpdateDialog(Member member) {
         Dialog<Member> dialog = new Dialog<>();
@@ -121,7 +120,7 @@ public class ViewAllMembersController {
             // Populate current values
             nameField.setText(member.getMember_Name());
             emailField.setText(member.getEmail());
-            mobileField.setText(Integer.toString(member.getMobile_No()));
+            mobileField.setText(member.getMobile_No());
             genderComboBox.setValue( String.valueOf(member.getGender()));
             addressField.setText(member.getAddress());
 
@@ -134,7 +133,7 @@ public class ViewAllMembersController {
                 if (dialogButton == updateButtonType) {
                     member.setMember_Name(nameField.getText());
                     member.setEmail(emailField.getText());
-                    member.setMobile_No( Integer.parseInt(mobileField.getText()) );
+                    member.setMobile_No( mobileField.getText() );
                     member.setGender(genderComboBox.getValue().charAt(0));
                     member.setAddress(addressField.getText());
                     return member;
