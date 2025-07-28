@@ -24,7 +24,6 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
     private static final String url = DatabaseUtil.getUrl();
     private static final String user = DatabaseUtil.getUser();
     private static final String password = DatabaseUtil.getPassword();
-
    
 	@Override
 	public int addIssueRecord(Issue_Records newRecord) {
@@ -33,9 +32,11 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	    int memberId=newRecord.getMemberId();
 		try{
 			if((new DataBookDao().getBookById(bookId)!=null) && (new MemberDaoImpl().getMemberById(memberId)!=null)) {
+				//System.out.println("In dao entered if block since book id and mem id is not null");
 			    Book book=new DataBookDao().getBookById(bookId);
 				char status=book.getBook_Status();
 				char available=book.getBook_Availability();
+				
 				if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))){
 					String query="INSERT INTO issue_records(BookId,MemberId,Status,IssueDate,ReturnDate) VALUES (?,?,?,?,?);";
 					try (Connection connection = DriverManager.getConnection(url, user, password)) {
@@ -48,11 +49,12 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 						 rowsAffected = statement.executeUpdate();            
 				         if (rowsAffected == 0) {
 				        	 throw new SQLException("SQL ERROR: Failed to insert issueRecord");
-						 }    
+						 }
 						 try (ResultSet generatedKey = statement.getGeneratedKeys()){
 							 if(generatedKey.next()) {
 								 newRecord.setIssueId(generatedKey.getInt(1));
-							}
+								 System.out.println("Setting record id " + newRecord.getIssueId());
+							 }
 						}			
 					} 
 				}
@@ -193,5 +195,30 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			e.printStackTrace();
 		}
 		return record;
+	}
+	
+	@Override
+	public List<Issue_Records> getAllIssuedRecordLogs() {
+		String query="SELECT IssueId,BookId,MemberId,Status,IssueDate,ReturnDate FROM issue_records_log;";
+		List<Issue_Records> records=new ArrayList<Issue_Records>();
+		
+		try(Connection connection=DriverManager.getConnection(url,user,password);){
+			PreparedStatement statement=connection.prepareStatement(query);
+			ResultSet recordsList=statement.executeQuery();
+			while(recordsList.next()) {
+				int recordId=recordsList.getInt("IssueId");
+				int bookId=recordsList.getInt("BookId");
+				int memberId=recordsList.getInt("MemberId");
+				char status=recordsList.getString("Status").charAt(0);
+				Date issueDate=recordsList.getDate("IssueDate");
+				Date returnDate=recordsList.getDate("ReturnDate");
+				
+				Issue_Records record=new Issue_Records(recordId, bookId , memberId, status, issueDate, returnDate);
+				records.add(record);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return records;
 	}
 }

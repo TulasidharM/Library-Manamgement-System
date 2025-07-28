@@ -108,6 +108,24 @@ public class LibraryHomeController {
 			e.printStackTrace();
 		}
     }
+    @FXML
+    public void memberBooksClick() {
+    	try {
+			changePage("MemberBooks");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
+    @FXML
+    public void bookMembersClick() {
+    	try {
+			changePage("BookMembers");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
     
     public void changePage(String fxml) throws IOException {
     	dynamicParent.getChildren().clear();

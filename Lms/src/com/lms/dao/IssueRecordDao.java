@@ -12,4 +12,6 @@ public interface IssueRecordDao {
 	public int addIssue_Records_Log(Issue_Records record);
 	public Issue_Records getRecordById(int issueId);
 	public List<OverDueList> getOverdueRecords();
+	List<Issue_Records> getAllIssuedRecordLogs();
+	
 }

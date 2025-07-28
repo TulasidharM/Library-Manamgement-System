@@ -46,6 +46,7 @@ public class IssueBookController {
 				.map(resultbook->resultbook.getBook_Id()+"-"+resultbook.getBook_Title()+"["+resultbook.getBook_Category()+"]").collect(Collectors.toList());
 		memberIdComboBox.getItems().addAll(members);
 		bookIdComboBox.getItems().addAll(books);
+		
 	}
 	
 	@FXML

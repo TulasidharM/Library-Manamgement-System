@@ -10,6 +10,15 @@ public class Issue_Records {
 	private Date issueDate;
 	private Date returnDate;
 	
+	public Issue_Records() {
+		this.bookId=0;
+		this.memberId=0;
+		this.status = RecordStatus.Issued.getCode();
+		this.issueDate = null;
+		this.returnDate = null;
+
+	}
+	
 	public Issue_Records(int bookId, int memberId) {
 		this.bookId = bookId;
 		this.memberId = memberId;

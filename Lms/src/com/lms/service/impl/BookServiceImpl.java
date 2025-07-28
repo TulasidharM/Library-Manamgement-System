@@ -79,6 +79,7 @@ public class BookServiceImpl implements BookService{
 	public Map<String,Long> getBooksByCategory() {
 		Map<String,Long> categoryMap = bookDao.getAllBooks().stream()
 										.collect(Collectors.groupingBy((b)->b.getBook_Category(),Collectors.counting()));
+		
 		return categoryMap;
 	}
 

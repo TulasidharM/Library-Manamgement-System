@@ -2,6 +2,7 @@ package com.lms.service.impl;
 
 import com.lms.dao.IssueRecordDao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,19 +27,27 @@ public class IssueLogServiceImpl implements IssueLogService{
 
 	public IssueLogServiceImpl() {
 		this.bookDao = new DataBookDao();
-		this.memberDao=new MemberDaoImpl();
-		this.issueRecordDao=new IssueRecordDaoImpl();
+		this.memberDao = new MemberDaoImpl();
+		this.issueRecordDao = new IssueRecordDaoImpl();
 	}
 	
 	@Override
 	public void addIssueRecord(Issue_Records newRecord) {
 		try {
+			
+			//TODO: handle this exception
 			if(bookDao.getBookById(newRecord.getBookId())==null) {
 				throw new IdNotExistException("Entered BookId Is Invalid");
 			}
 			if(memberDao.getMemberById(newRecord.getMemberId())==null) {
 				throw new IdNotExistException("Entered MemberId Is Invalid");
 			}
+			
+			if(newRecord.getBookId() < 0) {
+				throw new IdNotExistException("Entered id(s) are not valid");
+
+			}
+			
 			issueRecordDao.addIssueRecord(newRecord);
 			bookDao.updateBookAvailability(newRecord.getBookId(), false);
 		}
@@ -47,18 +56,15 @@ public class IssueLogServiceImpl implements IssueLogService{
 		}
 	}
 	
-	
-	//TODO: add validation , make sure the record exists
+	@Override
 	public void returnIssuedBook(int issueId, boolean isReturned) {
 		Issue_Records issue = issueRecordDao.getRecordById(issueId);
 		if(issue == null) {
-			
 			return;
 		}
 		if(issue.getStatus() == 'I') {
 			issueRecordDao.updateIssueRecord(issueId, isReturned);
 		}
-		
 	}
 	
 	
@@ -88,6 +94,32 @@ public class IssueLogServiceImpl implements IssueLogService{
 	public List<Issue_Records> getAllIssuedRecords() {
 		return issueRecordDao.getAllIssuedRecords();
 	}
+	
+	public List<Issue_Records> getAllIssuedRecordLogs(){
+		return issueRecordDao.getAllIssuedRecordLogs();
+	}
+	
+	
+	//this is different from report , this gives all the previous and current books taken by a member
+	public List<Book> booksOfMember(int memberId){
+		List<Book> books = new ArrayList<Book>();
+		List<Issue_Records> logs = issueRecordDao.getAllIssuedRecords();
+		
+		
+		books = logs.stream()
+			.filter((log)->{
+				return log.getMemberId() == memberId;
+			})
+			//.distinct()
+			.map((log)->{
+				 return bookDao.getBookById(log.getBookId());
+			})
+			.collect(Collectors.toList());
+		
+		
+		return books;
+	}
+
 	
 	
 

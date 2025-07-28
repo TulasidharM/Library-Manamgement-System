@@ -65,6 +65,14 @@
                 <Button text="Book Members" onAction="#bookMembersButtonClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>       
                 
+                <Label text="Additional Features" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
+                
+                <Button text="Member's issued books" onAction="#memberBooksClick" styleClass="action-button"
+                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                <Button text="Book's previous borrowers" onAction="#bookMembersClick" styleClass="action-button"
+                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                
+                
             </VBox>
         </HBox>
     </VBox>
