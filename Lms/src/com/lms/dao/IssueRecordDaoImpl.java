@@ -27,7 +27,8 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 
    
 	@Override
-	public void addIssueRecord(Issue_Records newRecord) {
+	public int addIssueRecord(Issue_Records newRecord) {
+		int rowsAffected = 0;
 	    int bookId=newRecord.getBookId();
 	    int memberId=newRecord.getMemberId();
 		try{
@@ -44,7 +45,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 				         statement.setString(3, String.valueOf(newRecord.getStatus()));
 				         statement.setDate(4,newRecord.getIssueDate());
 						 statement.setDate(5, newRecord.getReturnDate());
-						 int rowsAffected = statement.executeUpdate();            
+						 rowsAffected = statement.executeUpdate();            
 				         if (rowsAffected == 0) {
 				        	 throw new SQLException("SQL ERROR: Failed to insert issueRecord");
 						 }    
@@ -64,6 +65,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
+		return rowsAffected;
 	}
 
 	@Override
@@ -112,7 +114,8 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	}
 	
 	@Override
-	public void addIssue_Records_Log(Issue_Records record) {
+	public int addIssue_Records_Log(Issue_Records record) {
+		int rowsAffected=0;
 		String query="INSERT INTO issue_records_log(IssueId,BookId,MemberId,Status,IssueDate,ReturnDate) VALUES (?,?,?,?,?,?);";
 		try(Connection connection=DriverManager.getConnection(url,user,password);){
 			PreparedStatement statement=connection.prepareStatement(query);
@@ -122,7 +125,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 			statement.setString(4, String.valueOf(record.getStatus()));
             statement.setDate(5,record.getIssueDate());
             statement.setDate(6, record.getReturnDate());
-            int rowsAffected = statement.executeUpdate();
+            rowsAffected = statement.executeUpdate();
             
             if (rowsAffected == 0) {
                 throw new SQLException("Add issue_Record log failed, no rows affected.");
@@ -131,7 +134,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
     	} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
+		return rowsAffected;
 	}
 	@Override
 	public List<OverDueList> getOverdueRecords() {

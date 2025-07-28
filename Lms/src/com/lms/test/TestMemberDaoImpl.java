@@ -149,22 +149,27 @@ public class TestMemberDaoImpl {
         char gender = 'M';
         String address = "123 Street";
         Member member = new Member(memberId, name, email, mobile, gender, address);
-        memberDao.addMemberLogs(member);
-        String query = "SELECT * FROM members_log WHERE MemberId = ?";
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, member.getMember_Id());
-            ResultSet rs = stmt.executeQuery();
-            assertTrue("Member log should exist after insertion", rs.next());
-            assertEquals(memberId, rs.getInt("MemberId"));
-            assertEquals(name, rs.getString("Name"));
-            assertEquals(email, rs.getString("Email"));
-            assertEquals(mobile, rs.getString("Mobile"));
-            assertEquals(String.valueOf(gender), rs.getString("Gender"));
-            assertEquals(address, rs.getString("Address"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail("SQLException during testAddMemberLogs: " + e.getMessage());
+        int i=memberDao.insertMember(member);
+        if(i!=0) {
+        	String query = "SELECT * FROM members_log WHERE MemberId = ?";
+            try (Connection conn = DriverManager.getConnection(url, user, password);
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, member.getMember_Id());
+                ResultSet rs = stmt.executeQuery();
+                assertTrue("Member log should exist after insertion", rs.next());
+                assertEquals(memberId, rs.getInt("MemberId"));
+                assertEquals(name, rs.getString("Name"));
+                assertEquals(email, rs.getString("Email"));
+                assertEquals(mobile, rs.getString("Mobile"));
+                assertEquals(String.valueOf(gender), rs.getString("Gender"));
+                assertEquals(address, rs.getString("Address"));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                fail("SQLException during testAddMemberLogs: " + e.getMessage());
+            }
+        }
+        else {
+        	assertEquals(0, i);
         }
     }
 

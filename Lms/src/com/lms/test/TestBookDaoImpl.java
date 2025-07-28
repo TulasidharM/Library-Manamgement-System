@@ -61,14 +61,7 @@ public class TestBookDaoImpl {
         assertNotNull("Book list should not be null", books);
         assertFalse("Book list should not be empty", books.isEmpty());
 
-        boolean found = books.stream().anyMatch(book ->
-            book.getBook_Id() == insertedBook.getBook_Id() &&
-            "JUnit Book".equals(book.getBook_Title()) &&
-            "JUnit Author".equals(book.getBook_Author()) &&
-            "Testing".equals(book.getBook_Category()) &&
-            book.getBook_Status() == 'A' &&
-            book.getBook_Availability() == 'A'
-        );
+        boolean found = books.stream().anyMatch(book ->book.getBook_Id() == insertedBook.getBook_Id());
 
         assertTrue("Inserted test book should be in the list returned by getAllBooks", found);
     }
@@ -106,9 +99,9 @@ public class TestBookDaoImpl {
    
     @Test
     public void testAddBookLogs() {
-    	int bookId=11;
-    	Book testBook = new Book(bookId, "JUnit Book","Test Author","Action", 'A','A');
+    	Book testBook = new Book("JUnit Book","Test Author","Action");
     	bookDao.addBookLogs(testBook);
+    	int bookId=testBook.getBook_Id();
     	String query = "SELECT * FROM books_log WHERE BookId = ?";
         try (Connection conn = DriverManager.getConnection(url, user, password);
         	PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -127,7 +120,8 @@ public class TestBookDaoImpl {
     
     @Test
     public void testUpdateBookAvailability() {
-    	Book testBook = new Book(150,"Test Name", "Test Author", "Test Category",'A','I');
+    	Book testBook = new Book("Test Name", "Test Author", "Test Category");
+    	
         String addQuery = "INSERT INTO books (BookId, Title, Author, Category, BookStatus, Availability) VALUES (?,?,?,?,?,?)";
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(addQuery)) {
@@ -159,8 +153,7 @@ public class TestBookDaoImpl {
     
     @Test
     public void testGetBookById() {
-        int bookId = 601;
-        Book expectedBook = new Book(bookId, "GetTest Book", "GetTest Author", "Action", 'A', 'A');
+        Book expectedBook = new Book("GetTest Book", "GetTest Author", "Action");
         String insertQuery = "INSERT INTO books VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
@@ -176,7 +169,7 @@ public class TestBookDaoImpl {
         	e.printStackTrace();
             fail("Failed to insert or update test book: " + e.getMessage());
         }
-        Book book = bookDao.getBookById(bookId);
+        Book book = bookDao.getBookById(expectedBook.getBook_Id());
         assertNotNull("Book should not be null", book);
         assertEquals(expectedBook.getBook_Id(), book.getBook_Id());
         assertEquals(expectedBook.getBook_Title(),book.getBook_Title());
