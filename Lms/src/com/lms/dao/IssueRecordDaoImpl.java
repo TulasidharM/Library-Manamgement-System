@@ -161,7 +161,7 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	        System.out.println("Error executing join query: " + e.getMessage());
 	    }
 	    
-	    return duerecordsList.stream().filter(record->record.getOverDueDate().before(Date.valueOf(LocalDate.now()))).collect(Collectors.toList());
+	    return duerecordsList;
 	}
 
 	@Override

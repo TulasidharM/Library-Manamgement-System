@@ -109,7 +109,6 @@ public class ViewAllBooksController {
                     "Biography"
                 );
             
-            // populate the current values of the book
             titleField.setText(book.getBook_Title());
             authorField.setText(book.getBook_Author());
             availabilityField.setText(String.valueOf(book.getBook_Availability()));
@@ -127,9 +126,28 @@ public class ViewAllBooksController {
 
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == updateButtonType) {
-                    book.setBook_Title(titleField.getText());
-                    book.setBook_Author(authorField.getText());
-                    book.setBook_Category(categoryComboBox.getValue());
+                	
+                	String title = titleField.getText().trim();
+                    String author = authorField.getText().trim();    
+                    String category = categoryComboBox.getValue();
+
+                    if (!title.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
+                        showAlert("Invalid Title", "Title must be 1-100 characters long and contain only letters, numbers, and common punctuation.");
+                        return null;
+                    }
+
+                    if (!author.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
+                        showAlert("Invalid Author", "Author name must be 2-50 characters long and contain only letters and valid name characters.");
+                        return null;
+                    }
+
+                    if (category == null || !category.matches("^[A-Za-z]{2}[A-Za-z0-9\\s-]{0,98}$")) {
+                        showAlert("Invalid Category", "Please select a valid category.");
+                        return null;
+                    }
+                    book.setBook_Title(title);
+                    book.setBook_Author(author);
+                    book.setBook_Category(category);
                     book.setBook_Status(availableRadio.isSelected() ? 'A' : 'I');
                     return book;
                 }
@@ -159,5 +177,13 @@ public class ViewAllBooksController {
         } catch (IOException e) {
             System.out.println("Had a problem with going back to main: " + e.getMessage());
         }
+    }
+    
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

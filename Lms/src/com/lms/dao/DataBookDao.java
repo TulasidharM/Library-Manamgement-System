@@ -52,7 +52,7 @@ public class DataBookDao implements BookDao {
 
 	@Override
 	public List<Book> getAllBooks() {
-		String query="SELECT * FROM books;";
+		String query="SELECT BookId,Title,Author,Category,BookStatus,Availability FROM books;";
 		List<Book> books=new ArrayList<Book>();
 		try(Connection connection=DriverManager.getConnection(url,user,password);){
 			PreparedStatement statement=connection.prepareStatement(query);

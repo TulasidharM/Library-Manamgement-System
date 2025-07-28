@@ -3,12 +3,9 @@ package com.lms.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.lms.dao.IssueRecordDaoImpl;
 import com.lms.model.OverDueList;
 import com.lms.service.impl.BookServiceImpl;
 import com.lms.service.impl.IssueLogServiceImpl;
-import com.lms.dao.IssueRecordDao;
 import com.lms.service.BookService;
 import com.lms.model.ReportMember;
 import com.lms.service.IssueLogService;
@@ -50,10 +47,6 @@ public class ReportsController {
     @FXML
     private TableColumn<CategoryCount, Long> totalBooksColumn;
     
-    
-    private IssueRecordDao recordDao;
-    
-    
     @FXML
     private TableView<ReportMember> memberBooksTable;
     
@@ -71,12 +64,12 @@ public class ReportsController {
     
     
     private BookService bookService;
-    private IssueLogService issueLongService;
+    private IssueLogService issueLogService;
 
     public void initialize() {
     	bookService = new BookServiceImpl();
-        recordDao=new IssueRecordDaoImpl();
-        List<OverDueList> overDueRecordsList=recordDao.getOverdueRecords();
+    	issueLogService=new IssueLogServiceImpl();
+        List<OverDueList> overDueRecordsList=issueLogService.getOverDueBooks();
         updateOverduerecordsList(overDueRecordsList);
         issueId.setCellValueFactory(new PropertyValueFactory<>("issueId"));
         bookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
@@ -86,9 +79,8 @@ public class ReportsController {
         OverDue_BooksListTABLE.setItems(OverdueList);
 
         bookService = new BookServiceImpl();
-        issueLongService = new IssueLogServiceImpl();
+        issueLogService = new IssueLogServiceImpl();
         
-        // Initialize table columns
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         totalBooksColumn.setCellValueFactory(new PropertyValueFactory<>("count"));
         
@@ -106,7 +98,7 @@ public class ReportsController {
     	OverdueList.addAll(records);
     } 
     private void loadActiveBooksOfMembers() {
-        List<ReportMember> list = issueLongService.booksOfMemberReport();
+        List<ReportMember> list = issueLogService.booksOfMemberReport();
         memberBooksTable.setItems(FXCollections.observableArrayList(list));
     }
     
@@ -121,7 +113,7 @@ public class ReportsController {
         categoryTable.setItems(categoryData);
     }
     
-    // Helper class to hold category data
+
     public static class CategoryCount {
         private String category;
         private Long count;
@@ -137,5 +129,4 @@ public class ReportsController {
         public void setCategory(String category) { this.category = category; }
         public void setCount(Long count) { this.count = count; }
     }
-    
 }

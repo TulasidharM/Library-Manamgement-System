@@ -57,6 +57,15 @@ public class AddNewBookController {
 			if(title.trim().isEmpty() || author.trim().isEmpty() || category.isEmpty()) {
 				throw new EmptyFieldsException("One or more of the fields are empty");
 			}
+			if(!title.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
+				throw new DBConstrainsException("Please Enter valid title for the book");
+			}
+			if(!author.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
+				throw new DBConstrainsException("Please Enter valid author name for the book");
+			}
+			if(!category.matches("^[A-Za-z]{2}[A-Za-z0-9\\s-]{0,98}$")) {
+				throw new DBConstrainsException("Please Enter valid category name for the book");
+			}
 			
 			Book newBook = new Book(title,author,category);
 			bookService.addNewBook(newBook);

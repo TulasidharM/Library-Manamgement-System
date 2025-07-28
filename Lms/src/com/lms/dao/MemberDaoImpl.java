@@ -56,7 +56,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<Member> fetchAllMembers() {
-        String query = "SELECT * FROM members;";
+        String query = "SELECT MemberId,Name,Email,Mobile,Gender,Address FROM members;";
         List<Member> members = new ArrayList<>();
         
         try (Connection connection = DriverManager.getConnection(url, user, password);) {

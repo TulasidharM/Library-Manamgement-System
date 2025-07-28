@@ -55,6 +55,11 @@ public class AddNewMemberController {
             showAlert("Error", "Please fill in all fields!");
             return;
         }
+        
+        if(!name.matches("^[A-Za-z]{2}[A-Za-z0-9\\\\s]{0,253}$")) {
+        	showAlert("Error", "Please enter a valid name!");
+        	return;
+        }
        
         if (!isValidEmail(email)) {
             showAlert("Error", "Please enter a valid email address!");
@@ -100,7 +105,7 @@ public class AddNewMemberController {
     }
     
     private boolean isValidEmail(String email) {
-        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+        return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
     
     private boolean isValidMobile(String mobile) {

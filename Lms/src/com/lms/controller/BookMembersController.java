@@ -12,6 +12,7 @@ import com.lms.service.impl.IssueLogServiceImpl;
 import com.lms.service.impl.MemberServiceImpl;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 
@@ -41,11 +42,16 @@ public class BookMembersController {
 	
 	@FXML
 	public void getMembers() {
+		if (BooksComboBox.getValue()==null) {
+            showAlert("Error", "Please select the bookId!");
+            return;
+        }
+		
 		List<String> membersList=issueLogservice.getAllIssuedRecords().stream().
 				filter(record-> {
 				int bookId = Integer.parseInt(BooksComboBox.getValue().split("\\.")[0].trim());
-				return record.getBookId()==bookId;}).map(r->memberService.getMemberNameById(r.getMemberId())).collect(Collectors.toList());
-        members.setText(membersList.stream().collect(Collectors.joining(",")));
+				return record.getBookId()==bookId;}).map(r->memberService.getMemberNameById(r.getMemberId())).distinct().collect(Collectors.toList());
+        members.setText(membersList.stream().collect(Collectors.joining("\n")));
 	}
 	
 	@FXML
@@ -56,5 +62,12 @@ public class BookMembersController {
 			System.out.println("Couldn't change to home page " + e.getMessage());
 		}
 	}
+	private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 	
 }

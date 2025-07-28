@@ -12,17 +12,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+
+import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.io.IOException;
 import java.util.List;
@@ -97,8 +90,7 @@ public class ViewAllMembersController {
             setGraphic(empty ? null : updateButton);
         }
     }
-    
-    // Add the showUpdateDialog method
+
     private void showUpdateDialog(Member member) {
         Dialog<Member> dialog = new Dialog<>();
         dialog.setTitle("Update Member");
@@ -119,7 +111,6 @@ public class ViewAllMembersController {
                     "F"
                 );
 
-            // Populate current values
             nameField.setText(member.getMember_Name());
             emailField.setText(member.getEmail());
             mobileField.setText(member.getMobile_No());
@@ -136,6 +127,39 @@ public class ViewAllMembersController {
                 if (dialogButton == updateButtonType) {
                     Member tempMember = new Member(nameField.getText(),emailField.getText(),mobileField.getText() ,genderComboBox.getValue().charAt(0),addressField.getText());
                     return tempMember;
+                	
+                	String name = nameField.getText().trim();
+                	String email = emailField.getText().trim();
+                	String mobile = mobileField.getText().trim();
+                	char gender = genderComboBox.getValue().trim().charAt(0);
+                	String address = addressField.getText().trim();
+                	
+                	if (name.isEmpty() || email.isEmpty() || mobile.isEmpty() || address.isEmpty()) {
+                        showAlert("Error", "Please fill in all fields!");
+                        return null;
+                    }
+                    
+                    if(!name.matches("^[A-Za-z]{2}[A-Za-z0-9\\\\s]{0,253}$")) {
+                    	showAlert("Error", "Please enter a valid name!");
+                    	return null;
+                    }
+                   
+                    if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+                        showAlert("Error", "Please enter a valid email address!");
+                        return null;
+                    }
+                    
+                    if (!mobile.matches("\\d{10}")) {
+                        showAlert("Error", "Please enter a valid mobile number!");
+                        return null;
+                    }
+                	
+                    member.setMember_Name(name);
+                    member.setEmail(email);
+                    member.setMobile_No(mobile);
+                    member.setGender(gender);
+                    member.setAddress(address);
+                    return member;
                 }
                 return null;
             });
@@ -158,7 +182,6 @@ public class ViewAllMembersController {
             });
 
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("Error loading update dialog FXML: " + e.getMessage());
         }
     }
@@ -168,9 +191,6 @@ public class ViewAllMembersController {
        membersList.addAll(members);
     }
     
-    
-    
-    
     @FXML
     private void handleBackButton() {
         try {
@@ -178,5 +198,13 @@ public class ViewAllMembersController {
 		} catch (IOException e) {
 			System.out.println("Had a problem with going back to main: " + e.getMessage());
 		}
+    }
+    
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

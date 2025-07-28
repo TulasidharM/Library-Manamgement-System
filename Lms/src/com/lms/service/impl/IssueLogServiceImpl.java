@@ -3,6 +3,8 @@ package com.lms.service.impl;
 import com.lms.dao.IssueRecordDao;
 
 import java.util.ArrayList;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ import com.lms.exceptions.IdNotExistException;
 import com.lms.model.Book;
 import com.lms.model.Issue_Records;
 import com.lms.model.Member;
+import com.lms.model.OverDueList;
 import com.lms.model.ReportMember;
 import com.lms.service.IssueLogService;
 
@@ -114,5 +117,9 @@ public class IssueLogServiceImpl implements IssueLogService{
 
 	
 	
+	public List<OverDueList> getOverDueBooks(){
+		List<OverDueList> booksDueLists=issueRecordDao.getOverdueRecords().stream().filter(record->record.getOverDueDate().before(Date.valueOf(LocalDate.now()))).collect(Collectors.toList());
+		return booksDueLists;
+	}
 
 }
