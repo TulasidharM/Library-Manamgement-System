@@ -14,7 +14,7 @@ public class TestBookDaoImpl {
 
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "root@pokemon";
+    private static final String password = "Ashok@99122";
     private BookDao bookDao;
 
     @Before

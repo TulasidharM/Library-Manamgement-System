@@ -9,16 +9,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lms.exceptions.DBConstrainsException;
 import com.lms.model.Member;
+
 
 public class MemberDaoImpl implements MemberDao {
     
     private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "root@pokemon";
+    private static final String password = "Ashok@99122";
 
     @Override
-    public void insertMember(Member newMember) {
+    public int insertMember(Member newMember) {
+    	int rowsAffected = 0;
         String query = "INSERT INTO members(Name, Email, Mobile, Gender, Address) VALUES (?, ?, ?, ?, ?);";
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             PreparedStatement statement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
@@ -28,7 +31,7 @@ public class MemberDaoImpl implements MemberDao {
             statement.setString(4, String.valueOf(newMember.getGender()));
             statement.setString(5, newMember.getAddress());
             
-            int rowsAffected = statement.executeUpdate();
+            rowsAffected = statement.executeUpdate();
             
             if (rowsAffected == 0) {
                 throw new SQLException("SQL ERROR: Failed to insert member");
@@ -46,6 +49,7 @@ public class MemberDaoImpl implements MemberDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return rowsAffected;
     }
 
     @Override
@@ -77,7 +81,8 @@ public class MemberDaoImpl implements MemberDao {
     }
     
     @Override
-    public void updateMember(Member member) {
+    public int updateMember(Member member) {
+    	int rowsAffected=0;
         String query = "UPDATE members SET Name=?, Email=?, Mobile=?, Gender=?, Address=? WHERE MemberId=?";
         
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
@@ -90,7 +95,7 @@ public class MemberDaoImpl implements MemberDao {
             statement.setString(5, member.getAddress());
             statement.setInt(6, member.getMember_Id());
             
-            int rowsAffected = statement.executeUpdate();
+            rowsAffected = statement.executeUpdate();
             
             if (rowsAffected == 0) {
                 throw new SQLException("Failed to update member: Member not found");
@@ -99,27 +104,38 @@ public class MemberDaoImpl implements MemberDao {
         } catch (SQLException e) {
             System.out.println("Error updating member: " + e.getMessage());
         }
+        return rowsAffected;
     }
     
     @Override
     public void addMemberLogs(Member member) {
-    	String query = "INSERT INTO members_log(MemberId,Name,Email,Mobile,Gender,Address) VALUES (?,?,?,?,?,?);";
-    	try (Connection connection = DriverManager.getConnection(url, user, password);){
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, member.getMember_Id());
-			statement.setString(2, member.getMember_Name());
-            statement.setString(3, member.getEmail());
-            statement.setString(4, member.getMobile_No());
-            statement.setString(5, String.valueOf(member.getGender()));
-            statement.setString(6, member.getAddress());
-            
-            int rowsAffected = statement.executeUpdate();
-            
-            if (rowsAffected == 0) {
-                throw new SQLException("Add member log failed, no rows affected.");
-            } 
-			
-    	} catch (SQLException e) {
+    	int id=member.getMember_Id();
+    	try {
+    		if(getMemberById(id)==null) {
+        		String query = "INSERT INTO members_log(MemberId,Name,Email,Mobile,Gender,Address) VALUES (?,?,?,?,?,?);";
+            	try (Connection connection = DriverManager.getConnection(url, user, password);){
+        			PreparedStatement statement = connection.prepareStatement(query);
+        			statement.setInt(1, member.getMember_Id());
+        			statement.setString(2, member.getMember_Name());
+                    statement.setString(3, member.getEmail());
+                    statement.setString(4, member.getMobile_No());
+                    statement.setString(5, String.valueOf(member.getGender()));
+                    statement.setString(6, member.getAddress());
+                    
+                    int rowsAffected = statement.executeUpdate();
+                    
+                    if (rowsAffected == 0) {
+                        throw new SQLException("Add member log failed, no rows affected.");
+                    } 
+        			
+            	} 
+            	
+            }
+    		else {
+        		throw new DBConstrainsException("Member Id already exists" +id);
+        	}
+    	}
+    	catch (SQLException |DBConstrainsException e) {
 			System.out.println(e.getMessage());
 		}
     }

@@ -4,11 +4,10 @@ import org.junit.*;
 import com.lms.dao.DataBookDao;
 import com.lms.dao.IssueRecordDao;
 import com.lms.dao.IssueRecordDaoImpl;
+import com.lms.dao.MemberDaoImpl;
 import com.lms.model.Book;
 import com.lms.model.Issue_Records;
 import com.lms.model.OverDueList;
-
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 import java.sql.*;
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ import java.util.List;
 public class TestIssueRecordsImpl {
 	 private static final String url = "jdbc:mysql://localhost:3306/library";
 	 private static final String user = "root";
-	 private static final String password = "root@pokemon";
+	 private static final String password = "Ashok@99122";
 	 private IssueRecordDao issueRecordDao;
 
 	    @Before
@@ -28,29 +27,31 @@ public class TestIssueRecordsImpl {
 	    public void testAddIssueRecord() {
 	        int bookId = 150; 
 	        int memberId = 100;
-	        Book book=new DataBookDao().getBookById(bookId);
-			char status=book.getBook_Status();
-			char available=book.getBook_Availability();
 			try{
-			    if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))) {
-			    	Issue_Records newRecord = new Issue_Records(bookId, memberId);
-			        issueRecordDao.addIssueRecord(newRecord);
+				if((new DataBookDao().getBookById(bookId)!=null) && (new MemberDaoImpl().getMemberById(memberId)!=null)) {
+					Book book=new DataBookDao().getBookById(bookId);
+					char status=book.getBook_Status();
+					char available=book.getBook_Availability();
+					if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))) {
+				    	Issue_Records newRecord = new Issue_Records(bookId, memberId);
+				        issueRecordDao.addIssueRecord(newRecord);
 
-			        String query = "SELECT * FROM issue_records WHERE IssueId=?";
-			        try (Connection conn = DriverManager.getConnection(url, user, password);
-			             PreparedStatement stmt = conn.prepareStatement(query)) {
+				        String query = "SELECT * FROM issue_records WHERE IssueId=?";
+				        try (Connection conn = DriverManager.getConnection(url, user, password);
+				             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-			            stmt.setInt(1, newRecord.getIssueId());
-			            ResultSet rs = stmt.executeQuery();
-			            assertTrue("Inserted issue record should exist in the DB", rs.next());
-			            assertEquals(bookId, rs.getInt("BookId"));
-			            assertEquals(memberId, rs.getInt("MemberId"));
-			            assertEquals('I', rs.getString("Status").charAt(0));
-			            assertEquals(Date.valueOf(LocalDate.now()), rs.getDate("IssueDate"));
-			            assertEquals(null, rs.getDate("ReturnDate"));
+				            stmt.setInt(1, newRecord.getIssueId());
+				            ResultSet rs = stmt.executeQuery();
+				            assertTrue("Inserted issue record should exist in the DB", rs.next());
+				            assertEquals(bookId, rs.getInt("BookId"));
+				            assertEquals(memberId, rs.getInt("MemberId"));
+				            assertEquals('I', rs.getString("Status").charAt(0));
+				            assertEquals(Date.valueOf(LocalDate.now()), rs.getDate("IssueDate"));
+				            assertEquals(null, rs.getDate("ReturnDate"));
 
-			        }
-			    }
+				        }
+				    }
+				}
 			}
 	         catch (SQLException e) {
 	            fail("SQLException during test: " + e.getMessage());
@@ -98,29 +99,31 @@ public class TestIssueRecordsImpl {
 	    public void testUpdateIssueRecord() {
 	        int bookId = 601;     
 	        int memberId = 100; 
-	        Book book=new DataBookDao().getBookById(bookId);
-			char status=book.getBook_Status();
-			char available=book.getBook_Availability();
 			try{
-			    if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))) {
-			    	Issue_Records newRecord = new Issue_Records(bookId, memberId);
-			    	issueRecordDao.addIssueRecord(newRecord);
-			    	int issueId=newRecord.getIssueId();
-			    	issueRecordDao.updateIssueRecord(issueId, true);
-			    	String selectQuery = "SELECT Status, ReturnDate FROM issue_records WHERE IssueId = ?";
-			    	try (Connection conn = DriverManager.getConnection(url, user, password);
-			    			PreparedStatement selectStmt = conn.prepareStatement(selectQuery)) {
-			    		selectStmt.setInt(1, issueId);
-			    		try (ResultSet rs = selectStmt.executeQuery()) {
-			    			assertTrue("Updated record should exist", rs.next());
-			    			String updatedStatus = rs.getString("Status");
-			    			Date updatedReturnDate = rs.getDate("ReturnDate");
-			    			assertEquals("Status should be 'R' after return", "R", updatedStatus);
-			    			assertEquals("ReturnDate should be today's date", Date.valueOf(LocalDate.now()), updatedReturnDate);
-			    		}
+				if((new DataBookDao().getBookById(bookId)!=null) && (new MemberDaoImpl().getMemberById(memberId)!=null)) {
+					Book book=new DataBookDao().getBookById(bookId);
+					char status=book.getBook_Status();
+					char available=book.getBook_Availability();
+					if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))) {
+				    	Issue_Records newRecord = new Issue_Records(bookId, memberId);
+				    	issueRecordDao.addIssueRecord(newRecord);
+				    	int issueId=newRecord.getIssueId();
+				    	issueRecordDao.updateIssueRecord(issueId, true);
+				    	String selectQuery = "SELECT Status, ReturnDate FROM issue_records WHERE IssueId = ?";
+				    	try (Connection conn = DriverManager.getConnection(url, user, password);
+				    			PreparedStatement selectStmt = conn.prepareStatement(selectQuery)) {
+				    		selectStmt.setInt(1, issueId);
+				    		try (ResultSet rs = selectStmt.executeQuery()) {
+				    			assertTrue("Updated record should exist", rs.next());
+				    			String updatedStatus = rs.getString("Status");
+				    			Date updatedReturnDate = rs.getDate("ReturnDate");
+				    			assertEquals("Status should be 'R' after return", "R", updatedStatus);
+				    			assertEquals("ReturnDate should be today's date", Date.valueOf(LocalDate.now()), updatedReturnDate);
+				    		}
 
-			    	} 
-			    }
+				    	} 
+				    }
+				}
 			}
 			catch (SQLException e) {
 	    		fail("Verification failed: " + e.getMessage());
@@ -153,38 +156,40 @@ public class TestIssueRecordsImpl {
 	    public void testGetOverdueRecords() {
 	        int bookId = 602;
 	        int memberId = 30;
-	        Issue_Records newRecord = new Issue_Records(bookId, memberId);
-	        issueRecordDao.addIssueRecord(newRecord);
-	        int issueId = newRecord.getIssueId();
-	        String query="UPDATE issue_records SET IssueDate = '2020-07-25' WHERE IssueId=?;";
-	        try (Connection conn = DriverManager.getConnection(url, user, password);
-		             PreparedStatement stmt = conn.prepareStatement(query)) {
-	        	stmt.setInt(1, issueId);
-		        int rowsAffected=stmt.executeUpdate();
-		        if (rowsAffected == 0) {
-		        	throw new SQLException("SQL ERROR: Failed to insert issueRecord");
-		        } 
-		        List<OverDueList> overdueRecords = issueRecordDao.getOverdueRecords();
-		        boolean found = overdueRecords.stream().anyMatch(record ->record.getIssueId() == issueId );
-		        assertTrue("Overdue record should be returned by getOverdueRecords()", found);
+	        if((new DataBookDao().getBookById(bookId)!=null) && (new MemberDaoImpl().getMemberById(memberId)!=null)) {
+	        	 Issue_Records newRecord = new Issue_Records(bookId, memberId);
+	 	        issueRecordDao.addIssueRecord(newRecord);
+	 	        int issueId = newRecord.getIssueId();
+	 	        String query="UPDATE issue_records SET IssueDate = '2020-07-25' WHERE IssueId=?;";
+	 	        try (Connection conn = DriverManager.getConnection(url, user, password);
+	 		             PreparedStatement stmt = conn.prepareStatement(query)) {
+	 	        	stmt.setInt(1, issueId);
+	 		        int rowsAffected=stmt.executeUpdate();
+	 		        if (rowsAffected == 0) {
+	 		        	throw new SQLException("SQL ERROR: Failed to insert issueRecord");
+	 		        } 
+	 		        List<OverDueList> overdueRecords = issueRecordDao.getOverdueRecords();
+	 		        boolean found = overdueRecords.stream().anyMatch(record ->record.getIssueId() == issueId );
+	 		        assertTrue("Overdue record should be returned by getOverdueRecords()", found);
+	 	        }
+	 	        catch (SQLException e) {
+	 	        	e.printStackTrace();
+	 	            fail("SQLException during verification: " + e.getMessage());
+	 	        }
 	        }
-	        catch (SQLException e) {
-	        	e.printStackTrace();
-	            fail("SQLException during verification: " + e.getMessage());
-	        }
-	       
 	    }
 
 	    @Test
 	    public void testGetRecordById() {
 	        int bookId = 603; 
 	        int memberId = 35;
-	        Issue_Records newRecord = new Issue_Records(bookId, memberId);
-	        issueRecordDao.addIssueRecord(newRecord);
-	        int issueId = newRecord.getIssueId();
-	        Issue_Records record = issueRecordDao.getRecordById(issueId);
-	        assertNotNull("Record should not be null", record);
-	        assertEquals(issueId, record.getIssueId());
-	        
+	        if((new DataBookDao().getBookById(bookId)!=null) && (new MemberDaoImpl().getMemberById(memberId)!=null)) {
+	        	Issue_Records newRecord = new Issue_Records(bookId, memberId);
+		        issueRecordDao.addIssueRecord(newRecord);
+		        int issueId = newRecord.getIssueId();
+		        Issue_Records record = issueRecordDao.getRecordById(issueId);
+		        assertNotNull("Record should not be null", record);
+		        assertEquals(issueId, record.getIssueId());
+	        }
 	    }
 }

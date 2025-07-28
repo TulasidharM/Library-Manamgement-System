@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.lms.exceptions.DBConstrainsException;
 import com.lms.exceptions.IdNotExistException;
 import com.lms.model.Book;
 import com.lms.model.Issue_Records;
@@ -21,38 +22,45 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 	
 	private static final String url = "jdbc:mysql://localhost:3306/library";
     private static final String user = "root";
-    private static final String password = "root@pokemon";
+    private static final String password = "Ashok@99122";
    
 	@Override
 	public void addIssueRecord(Issue_Records newRecord) {
 	    int bookId=newRecord.getBookId();
-	    Book book=new DataBookDao().getBookById(bookId);
-		char status=book.getBook_Status();
-		char available=book.getBook_Availability();
+	    int memberId=newRecord.getMemberId();
 		try{
-		    if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))){
-				String query="INSERT INTO issue_records(BookId,MemberId,Status,IssueDate,ReturnDate) VALUES (?,?,?,?,?);";
-				try (Connection connection = DriverManager.getConnection(url, user, password)) {
-				      PreparedStatement statement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-				     statement.setInt(1, newRecord.getBookId());
-					 statement.setInt(2, newRecord.getMemberId());
-			         statement.setString(3, String.valueOf(newRecord.getStatus()));
-			         statement.setDate(4,newRecord.getIssueDate());
-					 statement.setDate(5, newRecord.getReturnDate());
-					 int rowsAffected = statement.executeUpdate();            
-			         if (rowsAffected == 0) {
-			        	 throw new SQLException("SQL ERROR: Failed to insert issueRecord");
-					 }    
-					 try (ResultSet generatedKey = statement.getGeneratedKeys()){
-						 if(generatedKey.next()) {
-							 newRecord.setIssueId(generatedKey.getInt(1));
-						}
-					}			
-				} 
+			if((new DataBookDao().getBookById(bookId)!=null) && (new MemberDaoImpl().getMemberById(memberId)!=null)) {
+			    Book book=new DataBookDao().getBookById(bookId);
+				char status=book.getBook_Status();
+				char available=book.getBook_Availability();
+				if((!String.valueOf(status).equals("I")) && (!String.valueOf(available).equals("I"))){
+					String query="INSERT INTO issue_records(BookId,MemberId,Status,IssueDate,ReturnDate) VALUES (?,?,?,?,?);";
+					try (Connection connection = DriverManager.getConnection(url, user, password)) {
+					      PreparedStatement statement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+					     statement.setInt(1, newRecord.getBookId());
+						 statement.setInt(2, newRecord.getMemberId());
+				         statement.setString(3, String.valueOf(newRecord.getStatus()));
+				         statement.setDate(4,newRecord.getIssueDate());
+						 statement.setDate(5, newRecord.getReturnDate());
+						 int rowsAffected = statement.executeUpdate();            
+				         if (rowsAffected == 0) {
+				        	 throw new SQLException("SQL ERROR: Failed to insert issueRecord");
+						 }    
+						 try (ResultSet generatedKey = statement.getGeneratedKeys()){
+							 if(generatedKey.next()) {
+								 newRecord.setIssueId(generatedKey.getInt(1));
+							}
+						}			
+					} 
+				}
+			}
+			else {
+				throw new DBConstrainsException("Book or Member not existed");
 			}
 		} 
-		catch (SQLException e) {
+		catch (SQLException | DBConstrainsException e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 
