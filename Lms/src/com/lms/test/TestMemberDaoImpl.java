@@ -142,13 +142,12 @@ public class TestMemberDaoImpl {
 
     @Test
     public void testAddMemberLogs() {
-        int memberId = 152;
         String name = "abc";
         String email = "abc@example.com";
         String mobile = "8222276255";
         char gender = 'M';
         String address = "123 Street";
-        Member member = new Member(memberId, name, email, mobile, gender, address);
+        Member member = new Member(name, email, mobile, gender, address);
         int i=memberDao.insertMember(member);
         if(i!=0) {
         	String query = "SELECT * FROM members_log WHERE MemberId = ?";
@@ -157,7 +156,7 @@ public class TestMemberDaoImpl {
                 stmt.setInt(1, member.getMember_Id());
                 ResultSet rs = stmt.executeQuery();
                 assertTrue("Member log should exist after insertion", rs.next());
-                assertEquals(memberId, rs.getInt("MemberId"));
+                assertEquals(member.getMember_Id(), rs.getInt("MemberId"));
                 assertEquals(name, rs.getString("Name"));
                 assertEquals(email, rs.getString("Email"));
                 assertEquals(mobile, rs.getString("Mobile"));

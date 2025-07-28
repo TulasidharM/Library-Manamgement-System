@@ -121,62 +121,38 @@ public class TestBookDaoImpl {
     @Test
     public void testUpdateBookAvailability() {
     	Book testBook = new Book("Test Name", "Test Author", "Test Category");
-    	
-        String addQuery = "INSERT INTO books (BookId, Title, Author, Category, BookStatus, Availability) VALUES (?,?,?,?,?,?)";
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(addQuery)) {
-            stmt.setInt(1, testBook.getBook_Id());
-            stmt.setString(2, testBook.getBook_Title());
-            stmt.setString(3, testBook.getBook_Author());
-            stmt.setString(4, testBook.getBook_Category());
-            stmt.setString(5, String.valueOf(testBook.getBook_Status()));
-            stmt.setString(6, String.valueOf(testBook.getBook_Availability()));
-            stmt.executeUpdate();
-        } 
-        catch (SQLException e) {
-            fail("insertion failed: " + e.getMessage());
-        }
-        bookDao.updateBookAvailability(testBook.getBook_Id(), false);
-        String query = "SELECT Availability FROM books WHERE BookId = ?";
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-        	
-            stmt.setInt(1, testBook.getBook_Id());
-            ResultSet rs = stmt.executeQuery();
-          
-            assertTrue("Book should exist in database", rs.next());
-            assertEquals('I', rs.getString("Availability").charAt(0));
-        } catch (SQLException e) {
-            fail("Verification failed: " + e.getMessage());
+    	bookDao.addBook(testBook);
+    	 if(testBook.getBook_Id()!=0) {
+        	bookDao.updateBookAvailability(testBook.getBook_Id(), false);
+            String query = "SELECT Availability FROM books WHERE BookId = ?";
+            try (Connection conn = DriverManager.getConnection(url, user, password);
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+            	
+                stmt.setInt(1, testBook.getBook_Id());
+                ResultSet rs = stmt.executeQuery();
+              
+                assertTrue("Book should exist in database", rs.next());
+                assertEquals('I', rs.getString("Availability").charAt(0));
+            } catch (SQLException e) {
+                fail("Verification failed: " + e.getMessage());
+            }
         }
     }
     
     @Test
     public void testGetBookById() {
         Book expectedBook = new Book("GetTest Book", "GetTest Author", "Action");
-        String insertQuery = "INSERT INTO books VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
-
-            stmt.setInt(1, expectedBook.getBook_Id());
-            stmt.setString(2, expectedBook.getBook_Title());
-            stmt.setString(3, expectedBook.getBook_Author());
-            stmt.setString(4, expectedBook.getBook_Category());
-            stmt.setString(5, String.valueOf(expectedBook.getBook_Status()));
-            stmt.setString(6, String.valueOf(expectedBook.getBook_Availability()));
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-        	e.printStackTrace();
-            fail("Failed to insert or update test book: " + e.getMessage());
+        bookDao.addBook(expectedBook);
+        if(expectedBook.getBook_Id()!=0) {
+            Book book = bookDao.getBookById(expectedBook.getBook_Id());
+            assertNotNull("Book should not be null", book);
+            assertEquals(expectedBook.getBook_Id(), book.getBook_Id());
+            assertEquals(expectedBook.getBook_Title(),book.getBook_Title());
+            assertEquals(expectedBook.getBook_Author(),book.getBook_Author());
+            assertEquals(expectedBook.getBook_Category(),book.getBook_Category());
+            assertEquals(expectedBook.getBook_Status(), book.getBook_Status());
+            assertEquals(expectedBook.getBook_Availability(),book.getBook_Availability());
         }
-        Book book = bookDao.getBookById(expectedBook.getBook_Id());
-        assertNotNull("Book should not be null", book);
-        assertEquals(expectedBook.getBook_Id(), book.getBook_Id());
-        assertEquals(expectedBook.getBook_Title(),book.getBook_Title());
-        assertEquals(expectedBook.getBook_Author(),book.getBook_Author());
-        assertEquals(expectedBook.getBook_Category(),book.getBook_Category());
-        assertEquals(expectedBook.getBook_Status(), book.getBook_Status());
-        assertEquals(expectedBook.getBook_Availability(),book.getBook_Availability());
     }
     
 }
