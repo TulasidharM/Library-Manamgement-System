@@ -13,6 +13,7 @@ public class Main extends Application {
 	
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	System.out.println(getClass().getResource("/com/lms/view/LibraryHome.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("/com/lms/view/LibraryHome.fxml"));
         scene = new Scene(root);
         primaryStage.setTitle("Library Management System");

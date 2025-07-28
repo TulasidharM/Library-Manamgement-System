@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.lms.dao.DataBookDao;
+import com.lms.Utils.ControllerUtil;
 import com.lms.main.Main;
-import com.lms.model.Issue_Records;
 import com.lms.service.BookService;
 import com.lms.service.IssueLogService;
 import com.lms.service.MemberService;
@@ -75,14 +74,13 @@ public class ReturnBookController {
 	
 	@FXML
 	void returnButtonClick(){
-		
 		if(bookComboBox.getValue()!= null && bookComboBox.getValue()!=null) {
 			int bookId = Integer.parseInt(bookComboBox.getValue().split("-")[1].trim());
 			int issueId = Integer.parseInt(bookComboBox.getValue().split("-")[0].trim());
 			bookService.updateBookAvailability(bookId,true);
 			
 			IssueBookService.returnIssuedBook(issueId, true);
-			createAlert(AlertType.CONFIRMATION,"Success","Return done","The selected book has been returned and has been updated!");
+			ControllerUtil.createAlert(AlertType.CONFIRMATION,"Success","Return done","The selected book has been returned and has been updated!");
 
 			try {
 				Main.changePage("LibraryHome");
@@ -91,18 +89,11 @@ public class ReturnBookController {
 			}
 		}
 		else {
-			createAlert(AlertType.WARNING,"Alert!","Data not selected","Please select a Member and a Book");
-			
+			ControllerUtil.createAlert(AlertType.WARNING,"Alert!","Data not selected","Please select a Member and a Book");
 		}
 		
 	}
 	
-	private void createAlert(AlertType alertType,String title,String header,String content) {
-		Alert alert = new Alert(alertType);
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(content);
-		alert.showAndWait();
-	}
+	
 	
 }

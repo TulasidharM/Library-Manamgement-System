@@ -4,6 +4,7 @@ package com.lms.controller;
 
 import java.io.IOException;
 
+import com.lms.Utils.ControllerUtil;
 import com.lms.exceptions.EmptyFieldsException;
 import com.lms.main.Main;
 import com.lms.model.Book;
@@ -11,6 +12,7 @@ import com.lms.service.BookService;
 import com.lms.service.impl.BookServiceImpl;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -57,10 +59,15 @@ public class AddNewBookController {
 			
 			Book newBook = new Book(title,author,category);
 			bookService.addNewBook(newBook);
-			Main.changePage("LibraryHome");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException | EmptyFieldsException e) {
+			
+			titleField.setText("");
+			authorField.setText("");
+			categoryComboBox.getSelectionModel().clearSelection();
+			errorLabel.setText("");
+			
+			ControllerUtil.createAlert(AlertType.CONFIRMATION, "Success", "Added book", "Successfully added " + title);
+			
+		}  catch (NullPointerException | EmptyFieldsException e) {
 			errorLabel.setText("Please enter all values");
 		}
 	}

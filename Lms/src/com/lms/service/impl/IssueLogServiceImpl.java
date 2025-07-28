@@ -14,6 +14,7 @@ import com.lms.dao.MemberDaoImpl;
 import com.lms.exceptions.IdNotExistException;
 import com.lms.model.Book;
 import com.lms.model.Issue_Records;
+import com.lms.model.Member;
 import com.lms.model.ReportMember;
 import com.lms.service.IssueLogService;
 
@@ -73,6 +74,9 @@ public class IssueLogServiceImpl implements IssueLogService{
 						.map((e)->{
 							int memberId = e.getKey();
 							List<Book> booksIds= e.getValue().stream().map((id)->bookDao.getBookById(id)).collect(Collectors.toList());
+							Member member = memberDao.getMemberById(memberId);
+							if(member == null)
+								return null;
 							return new ReportMember(memberId,memberDao.getMemberById(memberId).getMember_Name(),booksIds);
 						})
 						.collect(Collectors.toList());

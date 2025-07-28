@@ -29,50 +29,23 @@
             </Label>
         </HBox>
 
-        <HBox spacing="30" VBox.vgrow="ALWAYS">
-            <VBox spacing="20" HBox.hgrow="ALWAYS">
-            
-                <VBox spacing="10">
-                    <Label text="Overdue Books" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
-                    <TableView fx:id="OverDue_BooksListTABLE" VBox.vgrow="ALWAYS" prefHeight="200">
-                        <columns>
-                        	<TableColumn fx:id="issueId" text="Issue ID" prefWidth="100"/>
-                            <TableColumn fx:id="bookId" text="Book ID" prefWidth="100"/>
-                            <TableColumn fx:id="Title" text="Title" prefWidth="200"/>
-                            <TableColumn fx:id="member" text="Member" prefWidth="150"/>
-                            <TableColumn fx:id="dueDate" text="Due Date" prefWidth="120"/>
-                        </columns>
-                    </TableView>
-                </VBox>
 
-                <VBox spacing="10">
-                    <Label text="Books by Category" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
-                    <TableView fx:id="categoryTable" VBox.vgrow="ALWAYS" prefHeight="150">
-                        <columns>
-                            <TableColumn text="Category" fx:id="categoryColumn" prefWidth="300"/>
-                            <TableColumn text="Total Books"  fx:id="totalBooksColumn" prefWidth="150"/>
-                        </columns>
-                    </TableView>
-                </VBox>
-                
-                <VBox spacing="10">
-                    <Label text="Members with Active Books" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
-                    <TableView fx:id="memberBooksTable" VBox.vgrow="ALWAYS" prefHeight="200">
-					    <columns>
-					        <TableColumn text="Member ID" fx:id="memberIdColumn" prefWidth="100"/>
-					        <TableColumn text="Name" fx:id="nameColumn" prefWidth="200"/>
-					        <TableColumn text="Books Issued" fx:id="booksIssuedColumn" prefWidth="1000"/>
-					    </columns>
-					</TableView>
-                </VBox>
+        <HBox spacing="30" VBox.vgrow="ALWAYS">
+        
+            <VBox fx:id="dynamicParent" spacing="20" HBox.hgrow="ALWAYS">
+                <!-- This is where our dynamic content will be rendered -->
             </VBox>
 
-            <VBox spacing="15" alignment="TOP_RIGHT" minWidth="220">
+            <VBox spacing="15"  alignment="TOP_CENTER" minWidth="220">
+            	<Button text="Home/Reports" styleClass="action-button" onAction="#ReportsClick"
+                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                        
                 <Label text="Book Management" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
                 <Button text="Add Book" styleClass="action-button" onAction="#addBookButtonClick"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="View Books" styleClass="action-button" onAction="#viewAllBooksClick"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
+
 
                 <Label text="Member Management" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
                 <Button text="Add Member" onAction="#addMemberButtonClick" styleClass="action-button"
@@ -80,7 +53,9 @@
                 <Button text="View Members" onAction="#viewAllMembersClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 
+                
                 <Label text="Issue/Return Management" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
+                
                 <Button text="Issue Book" onAction="#issueBookButtonClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="Return Book" onAction="#returnBookButtonClick" styleClass="action-button"

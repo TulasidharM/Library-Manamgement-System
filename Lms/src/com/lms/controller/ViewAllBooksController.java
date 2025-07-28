@@ -65,7 +65,6 @@ public class ViewAllBooksController {
         
         //Configure action column with update button
         actionColumn.setCellFactory(param -> new UpdateButtonCell());
-
         bookTable.setItems(bookList);
     }
     
