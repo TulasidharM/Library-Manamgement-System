@@ -8,4 +8,5 @@ public interface MemberService {
 	void addNewMember(Member member);
 	List<Member> getAllMembers();
 	void updateMember(Member member);
+	String getMemberNameById(int id);
 }

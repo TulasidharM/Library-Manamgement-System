@@ -62,6 +62,8 @@
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="Issued Records" onAction="#viewIssuedRecordsClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                <Button text="Book Members" onAction="#bookMembersButtonClick" styleClass="action-button"
+                        style="-fx-min-width: 200; -fx-min-height: 40;"/>       
                 
             </VBox>
         </HBox>

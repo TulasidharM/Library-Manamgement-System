@@ -91,6 +91,15 @@ public class LibraryHomeController {
 			e.printStackTrace();
 		}
     }
+    
+    @FXML
+    public void bookMembersButtonClick() {
+    	try {
+			changePage("BookMembers");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
     @FXML
     public void ReportsClick() {
     	try {

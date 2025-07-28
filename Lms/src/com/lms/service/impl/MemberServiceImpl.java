@@ -33,6 +33,10 @@ public class MemberServiceImpl implements MemberService{
 	public List<Member> getAllMembers() {
 		return memberDao.fetchAllMembers();
 	}
+	@Override
+	public String getMemberNameById(int id) {
+		return memberDao.getMemberById(id).getMember_Name();
+	}
 	
 	@Override
 	public void updateMember(Member member) {
