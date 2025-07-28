@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.lms.Utils.DatabaseUtil;
 import com.lms.exceptions.DBConstrainsException;
 import com.lms.exceptions.IdNotExistException;
 import com.lms.model.Book;
@@ -19,10 +20,11 @@ import com.lms.model.Issue_Records;
 import com.lms.model.OverDueList;
 
 public class IssueRecordDaoImpl implements IssueRecordDao {
-	
-	private static final String url = "jdbc:mysql://localhost:3306/library";
-    private static final String user = "root";
-    private static final String password = "Ashok@99122";
+
+    private static final String url = DatabaseUtil.getUrl();
+    private static final String user = DatabaseUtil.getUser();
+    private static final String password = DatabaseUtil.getPassword();
+
    
 	@Override
 	public void addIssueRecord(Issue_Records newRecord) {

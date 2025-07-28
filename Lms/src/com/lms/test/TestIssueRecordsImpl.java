@@ -1,6 +1,7 @@
 package com.lms.test;
 import org.junit.*;
 
+import com.lms.Utils.DatabaseUtil;
 import com.lms.dao.DataBookDao;
 import com.lms.dao.IssueRecordDao;
 import com.lms.dao.IssueRecordDaoImpl;
@@ -13,9 +14,11 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 public class TestIssueRecordsImpl {
-	 private static final String url = "jdbc:mysql://localhost:3306/library";
-	 private static final String user = "root";
-	 private static final String password = "Ashok@99122";
+
+    private static final String url = DatabaseUtil.getUrl();
+    private static final String user = DatabaseUtil.getUser();
+    private static final String password = DatabaseUtil.getPassword();
+
 	 private IssueRecordDao issueRecordDao;
 
 	    @Before

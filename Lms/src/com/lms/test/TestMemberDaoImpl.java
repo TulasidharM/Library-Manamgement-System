@@ -10,14 +10,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import com.lms.Utils.DatabaseUtil;
 import com.lms.dao.MemberDao;
 import com.lms.dao.MemberDaoImpl;
 import com.lms.model.Member;
 
 public class TestMemberDaoImpl {
-    private static final String url = "jdbc:mysql://localhost:3306/library";
-    private static final String user = "root";
-    private static final String password = "Ashok@99122";
+
+    private static final String url = DatabaseUtil.getUrl();
+    private static final String user = DatabaseUtil.getUser();
+    private static final String password = DatabaseUtil.getPassword();
     private MemberDao memberDao;
 
     @Before

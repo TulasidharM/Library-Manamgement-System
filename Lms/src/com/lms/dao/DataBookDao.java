@@ -10,13 +10,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lms.Utils.DatabaseUtil;
 import com.lms.model.Book;
 
 public class DataBookDao implements BookDao {
-	
-	private static final String url="jdbc:mysql://localhost:3306/library";
-	private static final String user="root";
-	private static final String password="Ashok@99122";
+
+    private static final String url = DatabaseUtil.getUrl();
+    private static final String user = DatabaseUtil.getUser();
+    private static final String password = DatabaseUtil.getPassword();
+
 	
 	@Override
 	public Book addBook(Book newBook) {
