@@ -5,6 +5,7 @@ package com.lms.controller;
 import java.io.IOException;
 
 import com.lms.Utils.ControllerUtil;
+import com.lms.exceptions.DBConstrainsException;
 import com.lms.exceptions.EmptyFieldsException;
 import com.lms.main.Main;
 import com.lms.model.Book;
@@ -45,7 +46,7 @@ public class AddNewBookController {
 	            
 	        );
 	}
-	
+
 	@FXML
 	public void submitButtonClick() throws EmptyFieldsException{
 		try {
@@ -67,8 +68,8 @@ public class AddNewBookController {
 			
 			ControllerUtil.createAlert(AlertType.CONFIRMATION, "Success", "Added book", "Successfully added " + title);
 			
-		}  catch (NullPointerException | EmptyFieldsException e) {
-			errorLabel.setText("Please enter all values");
+		}  catch (NullPointerException | EmptyFieldsException | DBConstrainsException e) {
+			errorLabel.setText("Had an issue with creating book " + e.getMessage());
 		}
 	}
 	

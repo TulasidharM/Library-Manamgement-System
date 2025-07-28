@@ -3,6 +3,7 @@ package com.lms.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.lms.Utils.ValidatorsUtil;
 import com.lms.dao.MemberDao;
 import com.lms.dao.MemberDaoImpl;
 import com.lms.model.Member;
@@ -19,7 +20,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void addNewMember(Member member) {
     	try {
-    		validateMember(member);
+    		ValidatorsUtil.validateMember(member);
     		memberDao.insertMember(member);
     	}catch(IllegalArgumentException e) {
     		System.out.println(e.getMessage());
@@ -36,7 +37,6 @@ public class MemberServiceImpl implements MemberService{
 	    if (member == null) {
 	        throw new IllegalArgumentException("No member found with ID: " + memberId);
 	    }
-	    
 	    return member;
 	}
 
@@ -52,38 +52,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
-	public void updateMember(Member member) {
-		try {
-			validateMember(member);
-			memberDao.updateMember(member);
-		}catch(IllegalArgumentException e) {
-			System.out.println(e.getMessage());
-		}
+	public void updateMember(Member member) throws IllegalArgumentException {
+		ValidatorsUtil.validateMember(member);
+		System.out.println("This code executed");
+		memberDao.updateMember(member);
 	}
 	
-	
-	
-	private void validateMember(Member member) throws IllegalArgumentException {
-		if (member.getMember_Name() == null || member.getMember_Name().trim().isEmpty()) {
-            throw new IllegalArgumentException("Member name cannot be empty");
-        }
-
-        if (member.getEmail() == null || !member.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            throw new IllegalArgumentException("Invalid email format");
-        }
-        
-        if (String.valueOf(member.getMobile_No()).length() != 10) {
-            throw new IllegalArgumentException("Mobile number must be 10 digits");
-        }
-        
-        if (member.getGender() != 'M' && member.getGender() != 'F' && member.getGender() != 'O') {
-            throw new IllegalArgumentException("Invalid gender. Must be M, F, or O");
-        }
-        
-        if (member.getAddress() == null || member.getAddress().trim().isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be empty");
-        }
-	}
 
 	@Override
 	public Member getMemberByEmail(String email) {

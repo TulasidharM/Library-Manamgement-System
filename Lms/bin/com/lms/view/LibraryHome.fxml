@@ -62,8 +62,6 @@
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
                 <Button text="Issued Records" onAction="#viewIssuedRecordsClick" styleClass="action-button"
                         style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="Book Members" onAction="#bookMembersButtonClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>       
                 
                 <Label text="Additional Features" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
                 

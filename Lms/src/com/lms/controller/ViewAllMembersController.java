@@ -1,11 +1,13 @@
 package com.lms.controller;
 
+import com.lms.Utils.ControllerUtil;
 import com.lms.main.Main;
 import com.lms.model.Member;
 import com.lms.service.MemberService;
 import com.lms.service.impl.MemberServiceImpl;
 
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -129,21 +131,30 @@ public class ViewAllMembersController {
             ButtonType updateButtonType = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
 
+            //creating a temp member to send to update func
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == updateButtonType) {
-                    member.setMember_Name(nameField.getText());
-                    member.setEmail(emailField.getText());
-                    member.setMobile_No( mobileField.getText() );
-                    member.setGender(genderComboBox.getValue().charAt(0));
-                    member.setAddress(addressField.getText());
-                    return member;
+                    Member tempMember = new Member(nameField.getText(),emailField.getText(),mobileField.getText() ,genderComboBox.getValue().charAt(0),addressField.getText());
+                    return tempMember;
                 }
                 return null;
             });
 
+            //now if the temp member is successfully updated then actual object is updated
             dialog.showAndWait().ifPresent(updatedMember -> {
-                service.updateMember(updatedMember);
-                membersTable.refresh();
+                try{
+                	service.updateMember(updatedMember);
+                	System.out.println("this code shouldnt execute when exception");
+                	member.setMember_Name(updatedMember.getMember_Name());
+                    member.setEmail(updatedMember.getEmail());
+                    member.setMobile_No(updatedMember.getMobile_No());
+                    member.setGender(updatedMember.getGender());
+                    member.setAddress(updatedMember.getAddress());
+                	
+                	membersTable.refresh();
+                }catch(IllegalArgumentException e) {
+                	ControllerUtil.createAlert(AlertType.ERROR, "Fail", "Update failed", e.getMessage());
+                }
             });
 
         } catch (IOException e) {

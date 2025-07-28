@@ -63,6 +63,7 @@ public class MemberBooksController implements Initializable {
     @FXML
     private void searchByEmail() {
         String email = emailField.getText().trim();
+        
         if (email.isEmpty()) {
             errorLabel.setText("Please enter an email address");
             return;

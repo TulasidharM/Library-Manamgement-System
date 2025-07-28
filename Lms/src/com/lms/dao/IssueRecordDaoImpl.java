@@ -138,6 +138,8 @@ public class IssueRecordDaoImpl implements IssueRecordDao {
 		}
 		return rowsAffected;
 	}
+	
+	//TODO : filter the data in the service 
 	@Override
 	public List<OverDueList> getOverdueRecords() {
 	    String query = "SELECT ir.IssueId, ir.BookId, b.Title, m.Name AS Member, DATE_ADD(ir.IssueDate, INTERVAL 30 DAY) AS DueDate FROM issue_records ir JOIN members m ON ir.MemberId = m.MemberId JOIN books b ON ir.BookId = b.BookId WHERE ir.Status = 'I';";

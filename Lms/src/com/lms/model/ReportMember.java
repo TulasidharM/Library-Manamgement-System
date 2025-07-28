@@ -8,6 +8,7 @@ public class ReportMember {
 	private String Name;
 	private List<Book> booksActive;
 	private String booksActiveString;
+	
 	public ReportMember(int memberId, String name, List<Book> booksActive) {
 		super();
 		MemberId = memberId;

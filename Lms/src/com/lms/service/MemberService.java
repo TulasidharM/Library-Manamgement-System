@@ -9,4 +9,6 @@ public interface MemberService {
 	List<Member> getAllMembers();
 	void updateMember(Member member);
 	String getMemberNameById(int id);
+	Member getMemberById(int memberId);
+	Member getMemberByEmail(String email);
 }

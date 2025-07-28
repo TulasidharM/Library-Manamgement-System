@@ -13,7 +13,7 @@ public class LibraryHomeController {
     @FXML 
     private VBox dynamicParent;
    
-    @FXML 
+    @FXML
     public void initialize() {
     	try {
     		changePage("Reports");

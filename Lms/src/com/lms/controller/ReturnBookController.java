@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.lms.Utils.ControllerUtil;
 import com.lms.main.Main;
+import com.lms.model.Member;
 import com.lms.service.BookService;
 import com.lms.service.IssueLogService;
 import com.lms.service.MemberService;
@@ -17,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class ReturnBookController {
 	
@@ -30,6 +33,13 @@ public class ReturnBookController {
 	
 	@FXML
 	ComboBox<String> bookComboBox;
+	
+	@FXML
+	TextField emailField;
+	
+	@FXML
+	Label errorLabel;
+	
 	@FXML
     public void initialize() {
 		memberService = new MemberServiceImpl();
@@ -37,7 +47,7 @@ public class ReturnBookController {
 		bookService = new BookServiceImpl();
 		List<String> members= memberService.getAllMembers().stream()
 								.map(m->{
-									return m.getMember_Id() +" - "+ m.getMember_Name();
+									return m.getMember_Id() +" ."+ m.getMember_Name();
 								})
 								.collect(Collectors.toList());
 		memberComboBox.getItems().addAll(members);
@@ -57,9 +67,11 @@ public class ReturnBookController {
 		if(memberComboBox.getValue() == null) {
 			return;
 		}
+		System.out.println(memberComboBox.getValue());
+		int memberId =  Integer.parseInt(memberComboBox.getValue().split("\\.")[0].trim());
+		
 		List<String> records= IssueBookService.getAllIssuedRecords().stream()
 										.filter(r->{
-											int memberId = Integer.parseInt(memberComboBox.getValue().split("-")[0].trim());
 											return r.getMemberId() == memberId && r.getStatus() == 'I';
 										})
 										.map(r->{
@@ -92,6 +104,36 @@ public class ReturnBookController {
 			ControllerUtil.createAlert(AlertType.WARNING,"Alert!","Data not selected","Please select a Member and a Book");
 		}
 		
+	}
+	
+//	@FXML
+//	void issueButtonClick() {
+//		String selectedMember = memberComboBox.getValue();
+//        if (selectedMember != null) {
+//            int memberId = Integer.parseInt(selectedMember.split("\\.")[0].trim());
+//            displayMemberBooks(memberId);
+//            emailField.clear();
+//            errorLabel.setText("");
+//        }
+//	}
+	@FXML 
+	public void searchMemberByEmail(){
+        String email = emailField.getText().trim();
+        if (email.isEmpty()) {
+            errorLabel.setText("Please enter an email address");
+            return;
+        }
+
+        Member member = memberService.getMemberByEmail(email);
+        if (member == null) {
+            errorLabel.setText("No member found with this email");
+            return;
+        }
+
+        String memberString = member.getMember_Id() + ". " + member.getMember_Name();
+        memberComboBox.setValue(memberString);
+        
+        errorLabel.setText("");
 	}
 	
 	

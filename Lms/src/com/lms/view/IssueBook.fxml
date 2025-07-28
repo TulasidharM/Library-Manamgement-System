@@ -28,7 +28,7 @@
         </VBox.margin>
     </Label>
 
-    <GridPane vgap="25" hgap="20" alignment="CENTER" maxWidth="800">
+    <GridPane vgap="25" hgap="20" alignment="CENTER" maxWidth="900">
         <padding>
             <Insets left="100" right="100"/>
         </padding>
@@ -46,27 +46,35 @@
                   style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
                   maxWidth="Infinity"
                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                  
+		<Label text="Or Email of Member" 
+                   style="-fx-font-size: 14px; -fx-font-weight: bold"
+                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField promptText="Enter member's email" fx:id="emailField"  
+        			style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
+        			GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+		<Button onAction="#searchMemberByEmail" text="Search" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5;"
+		 			GridPane.columnIndex="2" GridPane.rowIndex="1"/>
 
         <Label text="Select Book:"
                style="-fx-font-size: 16px; -fx-font-weight: bold;"
-               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+               GridPane.columnIndex="0" GridPane.rowIndex="2"/>
         <ComboBox fx:id="bookIdComboBox"
                   promptText="Select Book"
                   style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
                   maxWidth="Infinity"
-                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                  GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     </GridPane>
 
     <VBox alignment="CENTER" spacing="20">
         <Label fx:id="errorLabel"
                style="-fx-text-fill: #e74c3c; -fx-font-size: 14px;"/>
         <HBox spacing="30" alignment="CENTER">
-            <Button fx:id="issueButton"
-                    onAction="#issueButtonClick"
+            <Button onAction="#issueButtonClick"
                     text="Issue"
                     style="-fx-min-width: 150; -fx-min-height: 45; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0); -fx-cursor: hand;"/>
-            <Button fx:id="cancelButton"
-                    onAction="#cancleButtonClick"
+            
+            <Button onAction="#cancleButtonClick"
                     text="Cancel"
                     style="-fx-min-width: 150; -fx-min-height: 45; -fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0); -fx-cursor: hand;"/>
         </HBox>

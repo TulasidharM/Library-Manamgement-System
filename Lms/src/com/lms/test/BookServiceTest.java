@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.lms.exceptions.DBConstrainsException;
 import com.lms.model.Book;
 import com.lms.service.impl.BookServiceImpl;
 
@@ -26,7 +27,11 @@ public class BookServiceTest {
     @Test
     public void testAddNewBook_Success() {
     	System.out.println("book id before adding it "+testBook.getBook_Id());
-        bookService.addNewBook(testBook);
+        try {
+			bookService.addNewBook(testBook);
+		} catch (DBConstrainsException e) {
+			e.printStackTrace();
+		}
         assertNotEquals(0, testBook.getBook_Id());
 
         Book retrievedBook = bookService.getBookById(testBook.getBook_Id());
@@ -37,7 +42,11 @@ public class BookServiceTest {
 
     @Test
     public void testGetAllBooks_Success() {
-        bookService.addNewBook(testBook);
+        try {
+			bookService.addNewBook(testBook);
+		} catch (DBConstrainsException e) {
+			e.printStackTrace();
+		}
         
         List<Book> books = bookService.getAllBooks();
         assertNotNull(books);
@@ -51,7 +60,11 @@ public class BookServiceTest {
     @Test
     public void testUpdateBook_Success() {
 
-        bookService.addNewBook(testBook);
+        try {
+			bookService.addNewBook(testBook);
+		} catch (DBConstrainsException e) {
+			e.printStackTrace();
+		}
         int bookId = testBook.getBook_Id();
 
         testBook.setBook_Title("Updated Title");
@@ -66,7 +79,11 @@ public class BookServiceTest {
 
     @Test
     public void testUpdateBookAvailability_Success() {
-        bookService.addNewBook(testBook);
+        try {
+			bookService.addNewBook(testBook);
+		} catch (DBConstrainsException e) {
+			e.printStackTrace();
+		}
         int bookId = testBook.getBook_Id();
 
         bookService.updateBookAvailability(bookId, false);
@@ -85,9 +102,16 @@ public class BookServiceTest {
         Book fictionBook2 = new Book(0, "Fiction Book 2", "Author 2", "Fiction", 'A', 'A');
         Book nonFictionBook = new Book(0, "Non Fiction Book", "Author 3", "Non-Fiction", 'A', 'A');
 
-        bookService.addNewBook(fictionBook1);
-        bookService.addNewBook(fictionBook2);
-        bookService.addNewBook(nonFictionBook);
+        
+        try {
+        	bookService.addNewBook(fictionBook1);
+			bookService.addNewBook(fictionBook2);
+			bookService.addNewBook(nonFictionBook);
+        } catch (DBConstrainsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 
         Map<String, Long> categoryMap = bookService.getBooksByCategory();
         
@@ -101,7 +125,11 @@ public class BookServiceTest {
     @Test
     public void testGetBookById_Success() {
         
-        bookService.addNewBook(testBook);
+        try {
+			bookService.addNewBook(testBook);
+		} catch (DBConstrainsException e) {
+			e.printStackTrace();
+		}
         int bookId = testBook.getBook_Id();
         Book retrievedBook = bookService.getBookById(bookId);
         

@@ -38,6 +38,7 @@
             <ColumnConstraints minWidth="300" prefWidth="400"/>
         </columnConstraints>
 
+
         <Label text="Book Title:" 
                style="-fx-font-size: 16px; -fx-font-weight: bold;"
                GridPane.columnIndex="0" GridPane.rowIndex="0"/>

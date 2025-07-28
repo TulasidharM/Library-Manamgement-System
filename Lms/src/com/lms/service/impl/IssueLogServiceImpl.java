@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.lms.Utils.ValidatorsUtil;
 import com.lms.dao.BookDao;
 import com.lms.dao.DataBookDao;
 import com.lms.dao.IssueRecordDaoImpl;
@@ -32,21 +33,10 @@ public class IssueLogServiceImpl implements IssueLogService{
 	}
 	
 	@Override
-	public void addIssueRecord(Issue_Records newRecord) {
+	public void addIssueRecord(Issue_Records newRecord) throws IdNotExistException{
 		try {
 			
-			//TODO: handle this exception
-			if(bookDao.getBookById(newRecord.getBookId())==null) {
-				throw new IdNotExistException("Entered BookId Is Invalid");
-			}
-			if(memberDao.getMemberById(newRecord.getMemberId())==null) {
-				throw new IdNotExistException("Entered MemberId Is Invalid");
-			}
-			
-			if(newRecord.getBookId() < 0) {
-				throw new IdNotExistException("Entered id(s) are not valid");
-
-			}
+			ValidatorsUtil.validateIssueRecord(newRecord);
 			
 			issueRecordDao.addIssueRecord(newRecord);
 			bookDao.updateBookAvailability(newRecord.getBookId(), false);
@@ -55,6 +45,8 @@ public class IssueLogServiceImpl implements IssueLogService{
 			System.out.println(e.getMessage());
 		}
 	}
+
+	
 	
 	@Override
 	public void returnIssuedBook(int issueId, boolean isReturned) {

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.lms.exceptions.IdNotExistException;
 import com.lms.model.Issue_Records;
 import com.lms.service.IssueLogService;
 import com.lms.service.impl.IssueLogServiceImpl;
@@ -31,7 +32,11 @@ public class IssueLogServiceTest {
         newRecord.setIssueDate(Date.valueOf(LocalDate.now()));
         newRecord.setReturnDate(null);
         
-        issueLogService.addIssueRecord(newRecord);
+        try {
+			issueLogService.addIssueRecord(newRecord);
+		} catch (IdNotExistException e) {
+			e.printStackTrace();
+		}
         
         List<Issue_Records> records = issueLogService.getAllIssuedRecords();
         System.out.println(records == null);

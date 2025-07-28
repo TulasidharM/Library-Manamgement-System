@@ -38,28 +38,33 @@
             <ColumnConstraints minWidth="300" prefWidth="400"/>
         </columnConstraints>
 
-        <Label text="Select Member:" 
+        <Label text="Select Member" 
                style="-fx-font-size: 16px; -fx-font-weight: bold;"
                GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <ComboBox fx:id="memberComboBox"
                   promptText="Select Member"
-                  style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
+                  style="-fx-pref-height: 45; -fx-pref-width:50 ;-fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
                   maxWidth="Infinity"
+                  onAction="#getBooksByMember"
                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-
-        <Button text="Get Books" 
-                onAction="#getBooksByMember"
-                style="-fx-min-width: 120; -fx-min-height: 35; -fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0); -fx-cursor: hand;"
-                GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-
+		
+		<Label text="Or Enter Email " 
+                   style="-fx-font-size: 16px; -fx-font-weight: bold"
+                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField promptText="Enter member's email" fx:id="emailField"  
+        			style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
+        			GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+		<Button onAction="#searchMemberByEmail" text="Search" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5; -fx-min-width:100;"
+		 			GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+		
         <Label text="Select Book:" 
                style="-fx-font-size: 16px; -fx-font-weight: bold;"
-               GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+               GridPane.columnIndex="0" GridPane.rowIndex="2"/>
         <ComboBox fx:id="bookComboBox"
                   promptText="Select Book"
                   style="-fx-pref-height: 45; -fx-font-size: 15px; -fx-background-radius: 8; -fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);"
                   maxWidth="Infinity"
-                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                  GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     </GridPane>
 
     <VBox alignment="CENTER" spacing="20">
