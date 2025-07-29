@@ -37,38 +37,28 @@
             </VBox>
 
             <VBox spacing="15"  alignment="TOP_CENTER" minWidth="220">
-            	<Button text="Home/Reports" styleClass="action-button" onAction="#ReportsClick"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+            	<Button text="Home/Reports" styleClass="action-button" onAction="#handleButtonClick"/>
                         
                 <Label text="Book Management" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
-                <Button text="Add Book" styleClass="action-button" onAction="#addBookButtonClick"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="View Books" styleClass="action-button" onAction="#viewAllBooksClick"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                <Button text="Add Book" styleClass="action-button" onAction="#handleButtonClick"/>
+                <Button text="View Books" styleClass="action-button" onAction="#handleButtonClick"/>
 
 
                 <Label text="Member Management" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
-                <Button text="Add Member" onAction="#addMemberButtonClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="View Members" onAction="#viewAllMembersClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                <Button text="Add Member" onAction="#handleButtonClick" styleClass="action-button"/>
+                <Button text="View Members" onAction="#handleButtonClick" styleClass="action-button"/>
                 
                 
                 <Label text="Issue/Return Management" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
                 
-                <Button text="Issue Book" onAction="#issueBookButtonClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="Return Book" onAction="#returnBookButtonClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="Issued Records" onAction="#viewIssuedRecordsClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                <Button text="Issue Book" onAction="#handleButtonClick" styleClass="action-button"/>
+                <Button text="Return Book" onAction="#handleButtonClick" styleClass="action-button"/>
+                <Button text="Issued Records" onAction="#handleButtonClick" styleClass="action-button"/>
                 
                 <Label text="Additional Features" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
                 
-                <Button text="Member's issued books" onAction="#memberBooksClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
-                <Button text="Book's previous borrowers" onAction="#bookMembersClick" styleClass="action-button"
-                        style="-fx-min-width: 200; -fx-min-height: 40;"/>
+                <Button text="Member's issued books" onAction="#handleButtonClick" styleClass="action-button"/>
+                <Button text="Book's previous borrowers" onAction="#handleButtonClick" styleClass="action-button"/>
                 
                 
             </VBox>

@@ -21,6 +21,6 @@ public class DatabaseUtil {
 	static {
 		url = "jdbc:mysql://localhost:3306/library";
 		user = "root";
-	   	password = "Ashok@99122";
+	   	password = "root@pokemon";
 	}
 }

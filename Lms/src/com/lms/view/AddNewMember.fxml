@@ -12,7 +12,8 @@
       prefHeight="800"
       prefWidth="1000"
       spacing="30"
-      style="-fx-background-color: linear-gradient(to bottom right, #ffffff, #f0f0f0);">
+      style="-fx-background-color: linear-gradient(to bottom right, #ffffff, #f0f0f0);"
+     >
 
     <padding>
         <Insets top="40" right="60" bottom="40" left="60"/>

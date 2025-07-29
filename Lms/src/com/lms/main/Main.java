@@ -1,5 +1,6 @@
 package com.lms.main;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -13,9 +14,16 @@ public class Main extends Application {
 	
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	File f = new File("/home/dasu/eclipse-workspacen/Library-Manamgement-System/Lms/src/com/lms/styles/styles.css");
+    	    	
     	System.out.println(getClass().getResource("/com/lms/view/LibraryHome.fxml"));
         Parent root = FXMLLoader.load(getClass().getResource("/com/lms/view/LibraryHome.fxml"));
+
         scene = new Scene(root);
+        
+        scene.getStylesheets().clear();
+    	scene.getStylesheets().add("file:///" + f);
+
         primaryStage.setTitle("Library Management System");
         primaryStage.setScene(scene);
         primaryStage.show();

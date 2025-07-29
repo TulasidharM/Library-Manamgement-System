@@ -1,0 +1,38 @@
+.table-view .column-header-background {
+   -fx-background-color: #34495e;
+
+}
+
+
+
+.table-view .column-header {
+  -fx-background-color: #34495e;
+  -fx-pref-height: 40px;
+}
+
+.table-view .column-header .label {
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-row-cell {
+  -fx-pref-height: 30px;
+}
+
+
+.table-view .column-header .text{
+  -fx-fill: white;	
+}
+
+.filler {
+  -fx-background-color: transparent;
+}
+
+.action-button {
+	-fx-min-width: 200;
+ 	-fx-min-height: 40;
+  	-fx-background-color: #4C7298; 
+  	-fx-font-weight: bold;
+   	-fx-text-fill: white; 
+   	-fx-cursor: hand;
+	-fx-pref-height : 45px;
+}

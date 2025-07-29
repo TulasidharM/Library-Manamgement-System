@@ -7,11 +7,13 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox fx:controller="com.lms.controller.ReportsController" spacing="20" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<VBox fx:controller="com.lms.controller.ReportsController" spacing="20" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" >
+	
 	 <VBox spacing="10">
 	     <Label text="Overdue Books" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
 	     <TableView fx:id="OverDue_BooksListTABLE" VBox.vgrow="ALWAYS" prefHeight="200">
 	         <columns>
+	         
 	         	<TableColumn fx:id="issueId" text="Issue ID" prefWidth="100" />
 	             <TableColumn fx:id="bookId" text="Book ID" prefWidth="100"/>
 	             <TableColumn fx:id="Title" text="Title" prefWidth="200"/>
@@ -23,7 +25,7 @@
 
      <VBox spacing="10">
          <Label text="Books by Category" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
-         <TableView fx:id="categoryTable" VBox.vgrow="ALWAYS" prefHeight="150">
+         <TableView fx:id="categoryTable" VBox.vgrow="ALWAYS" prefHeight="200">
              <columns>
                  <TableColumn text="Category" fx:id="categoryColumn" prefWidth="300"/>
                  <TableColumn text="Total Books"  fx:id="totalBooksColumn" prefWidth="150"/>

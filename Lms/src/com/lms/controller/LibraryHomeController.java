@@ -2,10 +2,16 @@ package com.lms.controller;
 
 
 import java.io.IOException;
+
+import com.lms.Utils.ControllerUtil;
 import com.lms.main.Main;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 public class LibraryHomeController {
@@ -19,114 +25,61 @@ public class LibraryHomeController {
     		changePage("Reports");
 
     	}catch(IOException e) {
-    		System.out.println("Had a problem changing page open an alert here");
+    		ControllerUtil.createAlert(AlertType.ERROR, "Navigation Fail", "Error changing page", "Couldn't change the page please try again");
     	}
     }
     
-    
     @FXML
-    public void addBookButtonClick()  {
-        try {
-			changePage("AddNewBook");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    @FXML
-    public void viewAllBooksClick()  {
-        try {
-			changePage("ViewAllBooks");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    @FXML
-    public void addMemberButtonClick()  {
-        try {
-			changePage("AddNewMember");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
+    public void handleButtonClick(ActionEvent event) {
+        if (!(event.getSource() instanceof Button)) return;
+        Button btn = (Button) event.getSource();
+        String btnText = btn.getText();
+        String fxml = null;
 
-    @FXML
-    public void viewAllMembersClick()  {
-        try {
-			changePage("ViewAllMembers");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    @FXML
-    public void issueBookButtonClick()  {
-    	try {
-			changePage("IssueBook");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    @FXML 
-    public void returnBookButtonClick()  {
-        try {
-			changePage("ReturnBook");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-    
-    @FXML
-    public void viewIssuedRecordsClick() {
-        try {
-			changePage("ViewAllissuedRecords");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-    
-    @FXML
-    public void bookMembersButtonClick() {
-    	try {
-			changePage("BookMembers");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-    @FXML
-    public void ReportsClick() {
-    	try {
-			changePage("Reports");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
-    @FXML
-    public void memberBooksClick() {
-    	try {
-			changePage("MemberBooks");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
+        switch (btnText) {
+            case "Home/Reports":
+                fxml = "Reports";
+                break;
+            case "Add Book":
+                fxml = "AddNewBook";
+                break;
+            case "View Books":
+                fxml = "ViewAllBooks";
+                break;
+            case "Add Member":
+                fxml = "AddNewMember";
+                break;
+            case "View Members":
+                fxml = "ViewAllMembers";
+                break;
+            case "Issue Book":
+                fxml = "IssueBook";
+                break;
+            case "Return Book":
+                fxml = "ReturnBook";
+                break;
+            case "Issued Records":
+                fxml = "ViewAllissuedRecords";
+                break;
+            case "Member's issued books":
+                fxml = "MemberBooks";
+                break;
+            case "Book's previous borrowers":
+                fxml = "BookMembers";
+                break;
+            default:
+                return;
+        }
 
-    @FXML
-    public void bookMembersClick() {
-    	try {
-			changePage("BookMembers");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try {
+            changePage(fxml);
+        } catch (IOException e) {
+        	ControllerUtil.createAlert(AlertType.ERROR, "Navigation Fail", "Error changing page", "Couldn't change the page please try again");
+        }
     }
-
     
+    
+
     public void changePage(String fxml) throws IOException {
     	dynamicParent.getChildren().clear();
     	dynamicParent.getChildren().add(loadFXML(fxml));

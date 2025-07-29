@@ -112,8 +112,7 @@ public class BookServiceTest {
 			bookService.addNewBook(fictionBook2);
 			bookService.addNewBook(nonFictionBook);
         } catch (DBConstrainsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
         
 

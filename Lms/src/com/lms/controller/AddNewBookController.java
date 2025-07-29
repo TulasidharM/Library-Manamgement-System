@@ -70,7 +70,11 @@ public class AddNewBookController {
 	}
 	
 	@FXML
-	public void cancleButtonClick() throws IOException {
-		Main.changePage("LibraryHome"); 
+	public void cancleButtonClick() {
+		try {
+			Main.changePage("LibraryHome");
+		} catch (IOException e) {
+			ControllerUtil.createAlert(AlertType.ERROR, "Navigation Fail", "Error changing page", "Couldn't change the page please try again");
+		}
 	}
 }

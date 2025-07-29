@@ -78,6 +78,7 @@ public class AddNewMemberController {
         try {
 			Main.changePage("LibraryHome");
 		} catch (IOException e) {
+			//TODO: Fix this and handle it
 			e.printStackTrace();
 		}
     }
@@ -86,6 +87,7 @@ public class AddNewMemberController {
         try {
 			Main.changePage("LibraryHome");
 		} catch (IOException e) {
+			//TODO: fix and handle
 			e.printStackTrace();
 		}
 

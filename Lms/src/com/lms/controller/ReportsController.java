@@ -71,6 +71,7 @@ public class ReportsController {
     	issueLogService=new IssueLogServiceImpl();
         List<OverDueList> overDueRecordsList=issueLogService.getOverDueBooks();
         updateOverduerecordsList(overDueRecordsList);
+        
         issueId.setCellValueFactory(new PropertyValueFactory<>("issueId"));
         bookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         Title.setCellValueFactory(new PropertyValueFactory<>("title"));

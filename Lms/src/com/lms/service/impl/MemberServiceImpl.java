@@ -17,6 +17,8 @@ public class MemberServiceImpl implements MemberService{
 		this.memberDao = new MemberDaoImpl();
 	}
 	
+	
+	//TODO : throw error here
     @Override
     public void addNewMember(Member member) {
     	try {
@@ -54,7 +56,6 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void updateMember(Member member) throws IllegalArgumentException {
 		ValidatorsUtil.validateMember(member);
-		System.out.println("This code executed");
 		memberDao.updateMember(member);
 	}
 	
