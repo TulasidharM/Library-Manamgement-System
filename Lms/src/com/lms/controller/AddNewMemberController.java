@@ -1,9 +1,12 @@
 package com.lms.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
 
+import com.lms.Utils.ControllerUtil;
+import com.lms.Utils.ValidatorsUtil;
 import com.lms.main.Main;
 import com.lms.model.Member;
 import com.lms.service.MemberService;
@@ -45,38 +48,14 @@ public class AddNewMemberController {
     
     @FXML
     public void handleSubmit() {
-        String name = nameField.getText();
-        String email = emailField.getText().trim();
-        String mobile = mobileField.getText().trim();
-        String gender = genderChoiceBox.getValue();
-        String address = addressArea.getText().trim();
-        
-        if (name.isEmpty() || email.isEmpty() || mobile.isEmpty() || address.isEmpty()) {
-            showAlert("Error", "Please fill in all fields!");
-            return;
-        }
-        
-        if(!name.matches("^[A-Za-z]{2}[A-Za-z0-9\\\\s]{0,253}$")) {
-        	showAlert("Error", "Please enter a valid name!");
-        	return;
-        }
-       
-        if (!isValidEmail(email)) {
-            showAlert("Error", "Please enter a valid email address!");
-            return;
-        }
-        
-        if (!isValidMobile(mobile)) {
-            showAlert("Error", "Please enter a valid mobile number!");
-            return;
-        }
-        
-        saveMember(name, email, mobile, gender, address);
-
-        showAlert("Success", "Member added successfully!");
-
-        clearForm();
+    		String name = nameField.getText();
+            String email = emailField.getText().trim();
+            String mobile = mobileField.getText().trim();
+            String gender = genderChoiceBox.getValue();
+            String address = addressArea.getText().trim();
+            saveMember(name, email, mobile, gender, address);
     }
+    
     
     @FXML
     public void handleCancel(ActionEvent event) {
@@ -84,9 +63,17 @@ public class AddNewMemberController {
     }
    
     public void saveMember(String name, String email, String mobile, String gender, String address) {
+    	try{
+    		Member member=new Member(name, email, mobile,gender.charAt(0), address);
+    		ValidatorsUtil.validateMember(member);
+    		service.addNewMember(member);
+    		showAlert("Success", "Member added successfully!");
+    		clearForm();
+    	}
+    	catch (NullPointerException | IllegalArgumentException e) {
+    		ControllerUtil.createAlert(AlertType.INFORMATION, "Error", "Add Member Failed", e.getMessage());
+    	}
         
-        Member member=new Member(name, email, mobile,gender.charAt(0), address);
-        service.addNewMember(member);
         
         try {
 			Main.changePage("LibraryHome");
@@ -102,14 +89,6 @@ public class AddNewMemberController {
 			e.printStackTrace();
 		}
 
-    }
-    
-    private boolean isValidEmail(String email) {
-        return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    }
-    
-    private boolean isValidMobile(String mobile) {
-        return mobile.matches("\\d{10}");
     }
     
     private void showAlert(String title, String message) {

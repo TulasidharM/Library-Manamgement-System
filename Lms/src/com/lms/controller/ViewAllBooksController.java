@@ -1,5 +1,7 @@
 package com.lms.controller;
 
+import com.lms.Utils.ControllerUtil;
+import com.lms.exceptions.DBConstrainsException;
 import com.lms.main.Main;
 import com.lms.model.Book;
 import com.lms.service.BookService;
@@ -10,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
@@ -130,33 +133,28 @@ public class ViewAllBooksController {
                 	String title = titleField.getText().trim();
                     String author = authorField.getText().trim();    
                     String category = categoryComboBox.getValue();
-
-                    if (!title.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
-                        showAlert("Invalid Title", "Title must be 1-100 characters long and contain only letters, numbers, and common punctuation.");
-                        return null;
-                    }
-
-                    if (!author.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
-                        showAlert("Invalid Author", "Author name must be 2-50 characters long and contain only letters and valid name characters.");
-                        return null;
-                    }
-
-                    if (category == null || !category.matches("^[A-Za-z]{2}[A-Za-z0-9\\s-]{0,98}$")) {
-                        showAlert("Invalid Category", "Please select a valid category.");
-                        return null;
-                    }
-                    book.setBook_Title(title);
-                    book.setBook_Author(author);
-                    book.setBook_Category(category);
-                    book.setBook_Status(availableRadio.isSelected() ? 'A' : 'I');
-                    return book;
+                    Book tempBook=new Book(title, author, category);
+                    tempBook.setBook_Status(book.getBook_Status());
+                    tempBook.setBook_Availability(book.getBook_Availability());
+                    return tempBook;
                 }
                 return null;
             });
 
             dialog.showAndWait().ifPresent(updatedBook -> {
-                bookService.updateBook(updatedBook);
-                bookTable.refresh();
+            	try {
+            		bookService.updateBook(updatedBook);
+            		book.setBook_Title(updatedBook.getBook_Title());
+                    book.setBook_Author(updatedBook.getBook_Author());
+                    book.setBook_Category(updatedBook.getBook_Category());
+                    book.setBook_Status(availableRadio.isSelected() ? 'A' : 'I');
+                    bookTable.refresh();
+            	}
+            	catch(DBConstrainsException e) {
+                	ControllerUtil.createAlert(AlertType.INFORMATION, "Fail", "Update failed", e.getMessage());
+                }
+                
+                
             });
 
         } catch (IOException e) {
@@ -177,13 +175,5 @@ public class ViewAllBooksController {
         } catch (IOException e) {
             System.out.println("Had a problem with going back to main: " + e.getMessage());
         }
-    }
-    
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

@@ -37,14 +37,11 @@ public class BookServiceImpl implements BookService{
 	}
 	
 	@Override
-	public void updateBook(Book book) {
-		try {
+	public void updateBook(Book book) throws DBConstrainsException {
 			ValidatorsUtil.validateBook(book);
 			bookDao.updateBook(book);
 			
-		} catch (DBConstrainsException e) {
-			System.out.println(e.getMessage());
-		}
+
 	}
 	
 	//Report 

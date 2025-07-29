@@ -1,7 +1,5 @@
 package com.lms.Utils;
 
-import java.util.List;
-
 import com.lms.dao.BookDao;
 import com.lms.dao.DataBookDao;
 import com.lms.dao.IssueRecordDao;
@@ -29,25 +27,27 @@ public class ValidatorsUtil {
 	}
 	
 	public static void validateBook(Book book) throws DBConstrainsException {
-		String bookTitle=book.getBook_Title();
-		String bookAuthor=book.getBook_Author();
-		String bookCategory=book.getBook_Category();
+		String bookTitle=book.getBook_Title().trim();
+		String bookAuthor=book.getBook_Author().trim();
+		String bookCategory=book.getBook_Category().trim();
 		char bookStatus=book.getBook_Status();
 		char bookAvailability=book.getBook_Availability();
-		
-		if(bookTitle.trim()==null || bookTitle.trim().isEmpty() || bookTitle.length()>255) {
-			throw new DBConstrainsException("Entered Book Name Is Invalid");
+		if(bookTitle == null || bookAuthor == null || bookCategory == null || bookStatus == '\u0000' || bookAvailability == '\u0000' ||  bookTitle.isEmpty() || bookAuthor.isEmpty() || bookCategory.isEmpty() ) {
+			throw new DBConstrainsException("Book fields cannot be empty");
 		}
-		if(bookAuthor.trim()==null || bookAuthor.trim().isEmpty() || bookAuthor.length()>255) {
-			throw new DBConstrainsException("Entered Author Name Is Invalid");
+		if(bookTitle.length()>255 || (!bookTitle.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$"))) {
+			throw new DBConstrainsException("Please enter a valid Title!");
 		}
-		if(bookCategory.trim()==null || bookCategory.trim().isEmpty() || bookCategory.length()>100) {
-			throw new DBConstrainsException("Entered An Invalid Book Category");
+		if(bookAuthor.length()>255 || (!bookAuthor.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$"))) {
+			throw new DBConstrainsException("Please enter a valid Author Name!");
 		}
-		if(bookStatus== '\u0000' || (bookStatus!='A' && bookStatus!='I')) {
+		if(bookCategory.length()>100 || (!bookCategory.matches("^[A-Za-z]{2}[A-Za-z0-9\\s-]{0,98}$"))) {
+			throw new DBConstrainsException("Please enter a valid Category Name!");
+		}
+		if(bookStatus!='A' && bookStatus!='I') {
 			throw new DBConstrainsException("Entered An Invalid Book Status");
 		}
-		if(bookAvailability== '\u0000' || (bookAvailability!='A' && bookAvailability!='I')) {
+		if(bookAvailability!='A' && bookAvailability!='I') {
 			throw new DBConstrainsException("Entered An Invalid Book Availability");
 		}
 	}
@@ -68,24 +68,25 @@ public class ValidatorsUtil {
 	}
 	
 	public static void validateMember(Member member) throws IllegalArgumentException {
-		if (member.getMember_Name() == null || member.getMember_Name().trim().isEmpty()) {
-            throw new IllegalArgumentException("Member name cannot be empty");
-        }
-
-        if (member.getEmail() == null || !member.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            throw new IllegalArgumentException("Invalid email format");
+		
+		if (member.getMember_Name() == null || member.getEmail() == null || member.getAddress() == null || member.getMobile_No() == null ||member.getMember_Name().isEmpty() || member.getEmail().isEmpty() || String.valueOf(member.getMobile_No()).isEmpty() || member.getAddress().isEmpty()) {
+			throw new IllegalArgumentException("Member fields cannot be empty");
         }
         
-        if (String.valueOf(member.getMobile_No()).length() != 10) {
-            throw new IllegalArgumentException("Mobile number must be 10 digits");
+        if(!member.getMember_Name().matches("^[A-Za-z]{2}[A-Za-z0-9\\\\s]{0,253}$")) {
+        	throw new IllegalArgumentException("Please enter a valid name!");
+        }
+       
+        if (!member.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+        	throw new IllegalArgumentException("Please enter a valid email address!");
         }
         
-        if (member.getGender() != 'M' && member.getGender() != 'F' && member.getGender() != 'O') {
-            throw new IllegalArgumentException("Invalid gender. Must be M, F, or O");
+        if (!String.valueOf(member.getMobile_No()).matches("\\d{10}")) {
+        	throw new IllegalArgumentException("Please enter a valid mobile number!");
         }
         
-        if (member.getAddress() == null || member.getAddress().trim().isEmpty()) {
-            throw new IllegalArgumentException("Address cannot be empty");
+        if (member.getGender() != 'M' && member.getGender() != 'F') {
+            throw new IllegalArgumentException("Invalid gender. Must be M or F");
         }
 	}
 }

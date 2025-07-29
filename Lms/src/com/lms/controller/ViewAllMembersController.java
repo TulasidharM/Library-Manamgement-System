@@ -15,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
-import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.io.IOException;
 import java.util.List;
@@ -122,53 +121,24 @@ public class ViewAllMembersController {
             ButtonType updateButtonType = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(updateButtonType, ButtonType.CANCEL);
 
-            //creating a temp member to send to update func
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == updateButtonType) {
-                    Member tempMember = new Member(nameField.getText(),emailField.getText(),mobileField.getText() ,genderComboBox.getValue().charAt(0),addressField.getText());
-                    return tempMember;
-                	
                 	String name = nameField.getText().trim();
                 	String email = emailField.getText().trim();
                 	String mobile = mobileField.getText().trim();
                 	char gender = genderComboBox.getValue().trim().charAt(0);
                 	String address = addressField.getText().trim();
                 	
-                	if (name.isEmpty() || email.isEmpty() || mobile.isEmpty() || address.isEmpty()) {
-                        showAlert("Error", "Please fill in all fields!");
-                        return null;
-                    }
-                    
-                    if(!name.matches("^[A-Za-z]{2}[A-Za-z0-9\\\\s]{0,253}$")) {
-                    	showAlert("Error", "Please enter a valid name!");
-                    	return null;
-                    }
-                   
-                    if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
-                        showAlert("Error", "Please enter a valid email address!");
-                        return null;
-                    }
-                    
-                    if (!mobile.matches("\\d{10}")) {
-                        showAlert("Error", "Please enter a valid mobile number!");
-                        return null;
-                    }
-                	
-                    member.setMember_Name(name);
-                    member.setEmail(email);
-                    member.setMobile_No(mobile);
-                    member.setGender(gender);
-                    member.setAddress(address);
-                    return member;
-                }
+                    Member tempMember = new Member(name,email,mobile,gender,address);
+                    return tempMember;
+                }	
                 return null;
             });
 
-            //now if the temp member is successfully updated then actual object is updated
             dialog.showAndWait().ifPresent(updatedMember -> {
                 try{
                 	service.updateMember(updatedMember);
-                	System.out.println("this code shouldnt execute when exception");
+                	
                 	member.setMember_Name(updatedMember.getMember_Name());
                     member.setEmail(updatedMember.getEmail());
                     member.setMobile_No(updatedMember.getMobile_No());
@@ -177,7 +147,7 @@ public class ViewAllMembersController {
                 	
                 	membersTable.refresh();
                 }catch(IllegalArgumentException e) {
-                	ControllerUtil.createAlert(AlertType.ERROR, "Fail", "Update failed", e.getMessage());
+                	ControllerUtil.createAlert(AlertType.INFORMATION, "Fail", "Update failed", e.getMessage());
                 }
             });
 
@@ -198,13 +168,5 @@ public class ViewAllMembersController {
 		} catch (IOException e) {
 			System.out.println("Had a problem with going back to main: " + e.getMessage());
 		}
-    }
-    
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 }

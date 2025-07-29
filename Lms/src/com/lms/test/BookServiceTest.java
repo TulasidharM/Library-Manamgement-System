@@ -69,7 +69,11 @@ public class BookServiceTest {
 
         testBook.setBook_Title("Updated Title");
         testBook.setBook_Author("Updated Author");
-        bookService.updateBook(testBook);
+        try {
+			bookService.updateBook(testBook);
+		} catch (DBConstrainsException e) {
+			e.printStackTrace();
+		}
 
         
         Book updatedBook = bookService.getBookById(bookId);

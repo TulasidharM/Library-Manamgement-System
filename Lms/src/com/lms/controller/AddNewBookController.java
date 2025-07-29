@@ -54,19 +54,6 @@ public class AddNewBookController {
 			String author = authorField.getText();
 			String category = categoryComboBox.getValue();
 			
-			if(title.trim().isEmpty() || author.trim().isEmpty() || category.isEmpty()) {
-				throw new EmptyFieldsException("One or more of the fields are empty");
-			}
-			if(!title.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
-				throw new DBConstrainsException("Please Enter valid title for the book");
-			}
-			if(!author.matches("^[A-Za-z]{2}[A-Za-z0-9\\s]{0,253}$")) {
-				throw new DBConstrainsException("Please Enter valid author name for the book");
-			}
-			if(!category.matches("^[A-Za-z]{2}[A-Za-z0-9\\s-]{0,98}$")) {
-				throw new DBConstrainsException("Please Enter valid category name for the book");
-			}
-			
 			Book newBook = new Book(title,author,category);
 			bookService.addNewBook(newBook);
 			
@@ -77,8 +64,8 @@ public class AddNewBookController {
 			
 			ControllerUtil.createAlert(AlertType.CONFIRMATION, "Success", "Added book", "Successfully added " + title);
 			
-		}  catch (NullPointerException | EmptyFieldsException | DBConstrainsException e) {
-			errorLabel.setText("Had an issue with creating book " + e.getMessage());
+		}  catch (NullPointerException | DBConstrainsException e) {
+			ControllerUtil.createAlert(AlertType.INFORMATION, "Error", "Add book Failed", e.getMessage());
 		}
 	}
 	
